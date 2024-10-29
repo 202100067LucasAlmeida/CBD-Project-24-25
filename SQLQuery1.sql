@@ -1,1 +1,1 @@
-select * from Currency$;
+use AdventureWorksLegacy;
