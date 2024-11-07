@@ -135,3 +135,5 @@ add
 alter table customer
 add constraint fk_customer_city
 foreign key (cityID, stateID, regionID) references city(cityID, stateID, regionID);
+
+-- Sales -- Seu lindo faz as tabelas separando por grupinhos como tão os comentários um beijo <3
