@@ -1,3 +1,4 @@
+use master;
 drop database if exists AdventureWorksBetter;
 create database AdventureWorksBetter;
 go
@@ -125,7 +126,7 @@ create table city(
 	foreign key(state_id, region_id) references _state(state_id, region_id)
 );
 
--- alteration customer --
+-- Alteration customer --
 alter table customer
 add
 	city_id int,
@@ -136,72 +137,71 @@ alter table customer
 add constraint fk_customer_city
 foreign key (city_id, state_id, region_id) references city(city_id, state_id, region_id);
 
--- currency --
+-- Currency --
 create table currency(
 	currency_id int identity(1,1) primary key, -- auto increment
 	currency_name varchar(40) not null,
 	currency_code char(1) not null
 );
 
-
-
-
-
--- product class
+-- Product class
 create table productClass (
 	productClass_id int identity(1,1) primary key,
 	productClass_code varchar(10) not null
 );
 
--- product model
+-- Product model
 create table productModel (
 	productModel_id int identity(1,1) primary key,
 	productModel_name varchar(100) not null
 );
 
--- product line
+-- Product line
 create table productLine (
 	productLine_id int identity(1,1) primary key,
 	productLine_code varchar(10) not null
 );
 
--- product style
+-- Product style
 create table productStyle (
 	productStyle_id int identity(1,1) primary key,
 	productStyle_code varchar(10) not null
 );
 
--- product size range
+-- Product size range
 create table productSizeRange (
 	productSizeRange_id int identity(1,1) primary key,
 	productSizeRange_description varchar(100) not null
 );
 
--- product category
+-- Product category
 create table productCategory (
 	productCategory_id int identity(1,1) primary key,
 	productCategory_name varchar(100) not null,
-	productCategory_parentCategory int foreign key (productCategory_parentCategory) references productCategory(productCategory_id) on delete cascade
+	productCategory_parentCategory int 
+	foreign key (productCategory_parentCategory) references productCategory(productCategory_id) 
+		on delete no action 
+		on update no action
 );
 
--- product color
+-- Product color
 create table productColor (
 	productColor_id int identity(1,1) primary key,
 	productColor_name varchar(100) not null
 );
 
--- size unit
+-- Size unit
 create table sizeUnit(
 	sizeUnit_id int identity(1,1) primary key,
 	sizeUnit_description varchar(10) not null
 );
--- weigth unit
+-- Weigth unit
 create table weigthUnit(
 	weigthUnit_id int identity(1,1) primary key,
 	weigthUnit_description varchar(10) not null
 );
 
--- product
+-- Product
 create table _product(
 	product_id int identity(1,1) primary key,
 	product_description varchar(100) not null,
@@ -234,7 +234,7 @@ create table _product(
 	foreign key(productWeigthUnit) references weigthUnit(weigthUnit_id)
 );
 
--- sales header
+-- Sales header
 create table salesHeader(
 	salesHeader_id int identity(1,1) primary key,
 	salesHeader_dueDate date not null,
@@ -247,7 +247,7 @@ create table salesHeader(
 	foreign key(currency_id) references currency(currency_id),
 	foreign key(country_id) references country(country_id)
 );
--- sales details
+-- Sales details
 create table salesDetails(
 	salesDetails_id int identity(1,1) primary key,
 	salesDetails_lineNumber int not null,
@@ -255,4 +255,13 @@ create table salesDetails(
 	salesDetails_unitPrice float not null,
 	salesDetails_taxAmount float not null,
 	salesDetails_freight float not null
+);
+
+-- Product <-> Sales details
+create table productSalesDetails(
+	salesDetails_id int,
+	product_id int,
+	primary key(salesDetails_id, product_id),
+	foreign key(salesDetails_id) references salesDetails(salesDetails_id),
+	foreign key(product_id) references _product(product_id)
 );
