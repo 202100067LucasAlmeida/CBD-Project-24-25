@@ -9,53 +9,53 @@ use AdventureWorksBetter;
 
 -- Customer details --
 create table title(
-	title_id int not null,
+	title_id int identity(1,1) not null,
 	title_description char(10) not null,
 	primary key(title_id)
 );
 
 create table gender(
-	gender_id int not null,
+	gender_id int identity(1,1) not null,
 	gender_code char(10) not null,
 	gender_description char(15) not null,
 	primary key(gender_id)
 );
 
 create table marital(
-	marital_id int not null,
+	marital_id int identity(1,1) not null,
 	marital_code char(10) not null,
 	marital_description char(15) not null,
 	primary key(marital_id)
 );
 
 create table occupation(
-	occupation_id int not null,
+	occupation_id int identity(1,1) not null,
 	occupation_name char(30) not null,
 	primary key(occupation_id)
 );
 
 create table education(
-	education_id int not null,
+	education_id int identity(1,1) not null,
 	education_name char(30) not null,
 	primary key(education_id)
 );
 
 create table _user(
-	_user_id int not null,
+	_user_id int identity(1,1) not null,
 	user_email char(30) not null,
 	user_password char(30) not null,
 	primary key(_user_id)
 );
 
 create table question(
-	question_id int not null,
+	question_id int identity(1,1) not null,
 	security_question char(30) not null,
 	primary key(question_id)
 );
 
 -- Customer -
 create table customer(
-	customer_id int not null,
+	customer_id int identity(1,1) not null,
 	title_id int,
 	gender_id int,
 	marital_id int,
@@ -85,13 +85,13 @@ create table customer(
 -- Territory --
 
 create table _group(
-	group_id int not null,
+	group_id int identity(1,1) not null,
 	group_name char(20) not null,
 	primary key(group_id)
 );
 
 create table country(
-	country_id int not null,
+	country_id int identity(1,1) not null,
 	group_id int,
 	country_name char(20) not null,
 	country_code char(10) not null,
@@ -100,7 +100,7 @@ create table country(
 );
 
 create table region(
-	region_id int not null,
+	region_id int identity(1,1) not null,
 	country_id int,
 	region_name char(20) not null,
 	primary key(region_id),
@@ -108,7 +108,7 @@ create table region(
 );
 
 create table _state(
-	state_id int not null,
+	state_id int identity(1,1) not null,
 	region_id int,
 	state_name char(20) not null,
 	state_code char(10) not null,
@@ -117,7 +117,7 @@ create table _state(
 );
 
 create table city(
-	city_id int not null,
+	city_id int identity(1,1) not null,
 	state_id int,
 	region_id int,
 	city_name char(20) not null,
