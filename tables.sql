@@ -256,3 +256,13 @@ create table salesDetails(
 	salesDetails_taxAmount float not null,
 	salesDetails_freight float not null
 );
+
+-- sales header details
+create table salesHeaderDetails(
+	salesHeader_id int,
+	salesDetails_id int,
+
+	primary key(salesHeader_id, salesDetails_id),
+	foreign key(salesHeader_id) references salesHeader(salesHeader_id),
+	foreign key (salesDetails_id) references salesDetails(salesDetails_id)
+);
