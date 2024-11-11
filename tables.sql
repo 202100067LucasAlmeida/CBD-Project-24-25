@@ -1,3 +1,4 @@
+use master;
 drop database if exists AdventureWorksBetter;
 create database AdventureWorksBetter;
 go
@@ -143,10 +144,6 @@ create table currency(
 	currency_code char(1) not null
 );
 
-
-
-
-
 -- product class
 create table productClass (
 	productClass_id int identity(1,1) primary key,
@@ -181,7 +178,10 @@ create table productSizeRange (
 create table productCategory (
 	productCategory_id int identity(1,1) primary key,
 	productCategory_name varchar(100) not null,
-	productCategory_parentCategory int foreign key (productCategory_parentCategory) references productCategory(productCategory_id) on delete cascade
+	productCategory_parentCategory int 
+	foreign key (productCategory_parentCategory) references productCategory(productCategory_id) 
+		on delete no action 
+		on update no action
 );
 
 -- product color
