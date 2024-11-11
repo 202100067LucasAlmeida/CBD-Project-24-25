@@ -266,3 +266,12 @@ create table salesHeaderDetails(
 	foreign key(salesHeader_id) references salesHeader(salesHeader_id),
 	foreign key (salesDetails_id) references salesDetails(salesDetails_id)
 );
+
+-- product sales details
+create table productSalesDetails(
+	salesDetails_id int,
+	product_id int,
+	primary key(salesDetails_id, product_id),
+	foreign key(salesDetails_id) references salesDetails(salesDetails_id),
+	foreign key(product_id) references _product(product_id)
+);
