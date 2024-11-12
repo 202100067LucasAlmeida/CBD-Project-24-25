@@ -132,15 +132,15 @@ create table territory.city(
 );
 
 -- Alteration customer --
-alter table customer
+alter table customer.customer
 add
 	city_id int,
 	state_id int,
 	region_id int;
 
-alter table customer
+alter table customer.customer
 add constraint fk_customer_city
-foreign key (city_id, state_id, region_id) references city(city_id, state_id, region_id);
+foreign key (city_id, state_id, region_id) references territory.city(city_id, state_id, region_id);
 
 -- Currency --
 create table currency(
@@ -188,7 +188,7 @@ create table product.productCategory (
 	productCategory_id int identity(1,1) primary key,
 	productCategory_name varchar(100) not null,
 	productCategory_parentCategory int 
-	foreign key (productCategory_parentCategory) references productCategory(productCategory_id) 
+	foreign key (productCategory_parentCategory) references product.productCategory(productCategory_id) 
 		on delete no action 
 		on update no action
 );
@@ -224,13 +224,11 @@ create table product._product(
 
 	productColor int,
 	productCategory int,
-	--productSizeRange int,
 	productClass int,
 	productModel int,
 
 	foreign key(productColor) references product.productColor(productColor_id),
 	foreign key(productCategory) references product.productCategory(productCategory_id),
-	--,
 	foreign key(productClass) references product.productClass(productClass_id),
 	foreign key(productModel) references product.productModel(productModel_id),
 	
