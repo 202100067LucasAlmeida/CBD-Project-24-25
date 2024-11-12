@@ -141,7 +141,7 @@ foreign key (city_id, state_id, region_id) references city(city_id, state_id, re
 create table currency(
 	currency_id int identity(1,1) primary key, -- auto increment
 	currency_name varchar(40) not null,
-	currency_code char(1) not null
+	currency_code char(10) not null -- Code só com uma letra né Morais porra
 );
 
 -- product class
