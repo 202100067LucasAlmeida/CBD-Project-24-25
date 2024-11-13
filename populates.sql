@@ -127,3 +127,26 @@ insert into territory.region(country_id, region_name)
 select country_id, st.SalesTerritoryRegion
 from territory.country c join AdventureWorksLegacy.dbo.SalesTerritory st on c.country_name = st.SalesTerritoryCountry;
 select * from territory.region;
+
+-- table _state
+select * from territory._state;
+select 
+	SalesTerritoryRegion,
+	SalesTerritoryCountry,
+	SalesTerritoryGroup,
+	City,
+	StateProvinceCode,
+	StateProvinceName,
+	CountryRegionCode,
+	CountryRegionName,
+	PostalCode 
+from AdventureWorksLegacy.dbo.SalesTerritory st
+inner join AdventureWorksLegacy.dbo.Customer c
+on c.SalesTerritoryKey = st.SalesTerritoryKey;
+
+insert into territory._state(region_id, state_name, state_code)
+select distinct region_id, c.StateProvinceName, c.StateProvinceCode
+from AdventureWorksLegacy.dbo.SalesTerritory st
+inner join territory.region r on r.region_name = st.SalesTerritoryRegion
+inner join AdventureWorksLegacy.dbo.Customer c
+on c.SalesTerritoryKey = st.SalesTerritoryKey;
