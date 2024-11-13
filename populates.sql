@@ -102,19 +102,6 @@ where p.Style != '';
 -- table Country
 select * from territory._group;
 select * from territory.country;
-select 
-	SalesTerritoryRegion,
-	SalesTerritoryCountry,
-	SalesTerritoryGroup,
-	City,
-	StateProvinceCode,
-	StateProvinceName,
-	CountryRegionCode,
-	CountryRegionName,
-	PostalCode 
-from AdventureWorksLegacy.dbo.SalesTerritory st
-inner join AdventureWorksLegacy.dbo.Customer c
-on c.SalesTerritoryKey = st.SalesTerritoryKey;
 
 insert into territory.country(group_id, country_name, country_code) 
 select distinct group_id, st.SalesTerritoryCountry, c.CountryRegionCode
@@ -124,4 +111,19 @@ on st.SalesTerritoryGroup = g.group_name
 inner join AdventureWorksLegacy.dbo.Customer c
 on st.SalesTerritoryKey = c.SalesTerritoryKey;
 
+-- table region
+select * from territory.region;
+select * from territory.country;
+select 
+	st.SalesTerritoryRegion,
+	st.SalesTerritoryCountry,
+	c.CountryRegionCode,
+	c.CountryRegionName
+from AdventureWorksLegacy.dbo.SalesTerritory st
+inner join AdventureWorksLegacy.dbo.Customer c
+on c.SalesTerritoryKey = st.SalesTerritoryKey;
 
+insert into territory.region(country_id, region_name)
+select country_id, st.SalesTerritoryRegion
+from territory.country c join AdventureWorksLegacy.dbo.SalesTerritory st on c.country_name = st.SalesTerritoryCountry;
+select * from territory.region;
