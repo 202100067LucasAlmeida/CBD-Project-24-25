@@ -150,3 +150,21 @@ from AdventureWorksLegacy.dbo.SalesTerritory st
 inner join territory.region r on r.region_name = st.SalesTerritoryRegion
 inner join AdventureWorksLegacy.dbo.Customer c
 on c.SalesTerritoryKey = st.SalesTerritoryKey;
+
+-- table city
+select * from territory.city;
+
+insert into territory.city(state_id, region_id, city_name, postal_code)
+select distinct
+	s.state_id,
+	s.region_id,
+	c.City,
+	c.PostalCode
+from AdventureWorksLegacy.dbo.Customer c
+inner join AdventureWorksLegacy.dbo.SalesTerritory st
+on c.SalesTerritoryKey = st.SalesTerritoryKey
+inner join territory._state s
+on s.state_name = c.StateProvinceName
+;
+
+select * from territory._state;
