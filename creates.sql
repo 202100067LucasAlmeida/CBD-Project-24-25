@@ -126,7 +126,7 @@ create table territory.city(
 	state_id int,
 	region_id int,
 	city_name char(20) not null,
-	postal_code int not null,
+	postal_code varchar(20) not null,
 	primary key(city_id, state_id, region_id),
 	foreign key(state_id, region_id) references territory._state(state_id, region_id)
 );
