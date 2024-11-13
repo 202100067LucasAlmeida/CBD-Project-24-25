@@ -98,3 +98,30 @@ select distinct p.Style from AdventureWorksLegacy.dbo.Products p;
 insert into product.productStyle(productStyle_code)
 select distinct p.Style from AdventureWorksLegacy.dbo.Products p
 where p.Style != '';
+
+-- table Country
+select * from territory._group;
+select * from territory.country;
+select 
+	SalesTerritoryRegion,
+	SalesTerritoryCountry,
+	SalesTerritoryGroup,
+	City,
+	StateProvinceCode,
+	StateProvinceName,
+	CountryRegionCode,
+	CountryRegionName,
+	PostalCode 
+from AdventureWorksLegacy.dbo.SalesTerritory st
+inner join AdventureWorksLegacy.dbo.Customer c
+on c.SalesTerritoryKey = st.SalesTerritoryKey;
+
+insert into territory.country(group_id, country_name, country_code) 
+select distinct group_id, st.SalesTerritoryCountry, c.CountryRegionCode
+from territory._group g 
+join AdventureWorksLegacy.dbo.SalesTerritory st 
+on st.SalesTerritoryGroup = g.group_name
+inner join AdventureWorksLegacy.dbo.Customer c
+on st.SalesTerritoryKey = c.SalesTerritoryKey;
+
+
