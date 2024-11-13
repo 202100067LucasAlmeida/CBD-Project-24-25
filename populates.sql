@@ -152,8 +152,6 @@ inner join AdventureWorksLegacy.dbo.Customer c
 on c.SalesTerritoryKey = st.SalesTerritoryKey;
 
 -- table city
-select * from territory.city;
-
 insert into territory.city(state_id, region_id, city_name, postal_code)
 select distinct
 	s.state_id,
@@ -167,4 +165,8 @@ inner join territory._state s
 on s.state_name = c.StateProvinceName
 ;
 
-select * from territory._state;
+select city_name, state_name, region_name, postal_code 
+from territory.city c
+inner join territory._state s on s.state_id = c.state_id 
+inner join territory.region r on r.region_id = c.region_id
+;
