@@ -45,6 +45,7 @@ create table _user(
 	_user_id int identity(1,1) not null,
 	user_email char(30) not null,
 	user_password char(30) not null,
+	user_answer varchar(200),
 	primary key(_user_id)
 );
 
@@ -56,7 +57,7 @@ create table question(
 
 -- Customer -
 create table customer.customer(
-	customer_id int identity(1,1) not null,
+	customer_id int not null,
 	title_id int,
 	gender_id int,
 	marital_id int,
@@ -65,7 +66,7 @@ create table customer.customer(
 	_user_id int,
 	question_id int,
 	first_name char(30) not null,
-	m_iddle_name char(30),
+	middle_name char(30),
 	last_name char(30) not null,
 	customer_address char(50) not null,
 	customer_phone char(15) not null,
@@ -212,7 +213,7 @@ create table product.weigthUnit(
 
 -- Product
 create table product._product(
-	product_id int identity(1,1) primary key,
+	product_id int primary key,
 	product_description varchar(100) not null,
 	product_dealerPrice float,
 	product_listPrice float,
