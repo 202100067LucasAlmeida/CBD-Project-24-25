@@ -318,6 +318,14 @@ create table product.productProductClass(
 );
 
 -- product productCategory
+create table product.productProductCategory(
+	product_id int,
+	category_id int,
+
+	primary key(product_id),
+	foreign key(product_id) references product._product(product_id),
+	foreign key(category_id) references product.productCategory(productCategory_id)
+);
 
 go
 create schema sales
