@@ -178,3 +178,49 @@ from territory.city c
 inner join territory._state s on s.state_id = c.state_id 
 inner join territory.region r on r.region_id = c.region_id
 ;
+
+-- table sizeUnit
+insert into product.sizeUnit(sizeUnit_description)
+select distinct(SizeUnitMeasureCode) from AdventureWorksLegacy.dbo.Products where SizeUnitMeasureCode != '';
+
+select * from product.sizeUnit;
+
+-- table weigthUnit
+insert into product.weigthUnit(weigthUnit_description)
+select distinct(WeightUnitMeasureCode) from AdventureWorksLegacy.dbo.Products where WeightUnitMeasureCode != '';
+
+select * from product.weigthUnit;
+
+-- table sizeRange ??? coisa que menos faz sentido
+-- faz sentido guardar 'NA' para quando uma medida nao esteja disponivel?
+insert into product.productSizeRange(productSizeRange_description)
+select distinct(SizeRange) from AdventureWorksLegacy.dbo.Products where SizeRange != 'NA';
+
+select * from product.productSizeRange;
+-- table category
+select distinct ps.EnglishProductSubcategoryName as 'subcategory', ps.ProductSubcategoryKey as 'subcategory key', p.EnglishProductCategoryName as 'category' from AdventureWorksLegacy.dbo.Products p
+inner join AdventureWorksLegacy.dbo.ProductSubCategory ps on ps.ProductSubcategoryKey = p.ProductSubcategoryKey
+order by 'subcategory key'
+;
+
+-- popular as principais categorias, null como parent pois nao existe nenhum acima destas
+insert into product.productCategory(productCategory_name, productCategory_parentCategory)
+select distinct EnglishProductCategoryName as 'category', null from AdventureWorksLegacy.dbo.Products;
+
+-- popular as subcategorias, preencher com o codigo da categoria principal
+insert into product.productCategory(productCategory_name, productCategory_parentCategory)
+select distinct ps.EnglishProductSubcategoryName as 'subcategory', 
+(
+	select productCategory_id from product.productCategory where productCategory_name = p.EnglishProductCategoryName
+)as 'category' -- selecionar o id da categoria principal
+from AdventureWorksLegacy.dbo.Products p
+inner join AdventureWorksLegacy.dbo.ProductSubCategory ps on ps.ProductSubcategoryKey = p.ProductSubcategoryKey;
+select * from product.productCategory;
+
+-- testar populate
+select 
+	productCategory_name as 'category',
+	(
+		select productCategory_name from product.productCategory pc where pc.productCategory_id = p.productCategory_parentCategory
+	)as 'is subcategory of'
+from product.productCategory p;
