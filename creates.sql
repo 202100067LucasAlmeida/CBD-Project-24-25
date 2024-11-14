@@ -1,7 +1,7 @@
 /*
 * Criação tabelas
 * Lucas - 202100067
-* João - 2020resto do n°
+* João - 202001541
 */
 use master;
 drop database if exists AdventureWorks;
