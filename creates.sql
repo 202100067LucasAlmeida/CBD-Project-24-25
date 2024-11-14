@@ -1,11 +1,11 @@
 /*
-* Criação tabelas
+* Criaï¿½ï¿½o tabelas
 * Lucas - 202100067
-* João - 202001541
+* Joï¿½o - 202001541
 */
 use master;
 drop database if exists AdventureWorks;
-create database AdventureWorks; -- Nome da BD é dito no enunciado feat. Luis
+create database AdventureWorks; -- Nome da BD ï¿½ dito no enunciado feat. Luis
 go
 
 use AdventureWorks;
@@ -160,7 +160,7 @@ foreign key (city_id, state_id, region_id) references territory.city(city_id, st
 create table currency(
 	currency_id int identity(1,1) primary key, -- auto increment
 	currency_name varchar(40) not null,
-	currency_code char(10) not null -- Code só com uma letra né Morais porra
+	currency_code char(10) not null -- Code sï¿½ com uma letra nï¿½ Morais porra
 );
 
 go
@@ -234,18 +234,7 @@ create table product._product(
 	product_standardCost float,
 	product_finishedGoods binary default(1),
 	product_size float,
-	product_weight float,
-
-	productColor int,
-	productCategory int,
-	productClass int,
-	productModel int,
-
-	foreign key(productColor) references product.productColor(productColor_id),
-	foreign key(productCategory) references product.productCategory(productCategory_id),
-	foreign key(productClass) references product.productClass(productClass_id),
-	foreign key(productModel) references product.productModel(productModel_id),
-	
+	product_weight float	
 );
 
 -- product productSizeRange
@@ -307,6 +296,28 @@ create table product.productProductColor(
 	foreign key(product_id) references product._product(product_id),
 	foreign key(color_id) references product.productColor(productColor_id)
 );
+
+-- product productModel
+create table product.productProductModel(
+	product_id int,
+	model_id int,
+
+	primary key(product_id),
+	foreign key(product_id) references product._product(product_id),
+	foreign key(model_id) references product.productModel(productModel_id),
+);
+
+-- product productClass
+create table product.productProductClass(
+	product_id int,
+	class_id int,
+
+	primary key(product_id),
+	foreign key(product_id) references product._product(product_id),
+	foreign key(class_id) references product.productClass(productClass_id),
+);
+
+-- product productCategory
 
 go
 create schema sales
