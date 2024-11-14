@@ -1,9 +1,14 @@
+/*
+* Criação tabelas
+* Lucas - 202100067
+* João - 2020resto do n°
+*/
 use master;
-drop database if exists AdventureWorksBetter;
-create database AdventureWorksBetter;
+drop database if exists AdventureWorks;
+create database AdventureWorks; -- Nome da BD é dito no enunciado feat. Luis
 go
 
-use AdventureWorksBetter;
+use AdventureWorks;
 
 go
 create schema customer;
@@ -82,6 +87,14 @@ create table customer.customer(
 	foreign key(education_id) references customer.education(education_id),
 	foreign key(_user_id) references _user(_user_id),
 	foreign key(question_id) references question(question_id)
+);
+
+create table customer.customerTitle(
+	customer_id int not null,
+	title_id int,
+	primary key(customer_id),
+	foreign key(customer_id) references customer.customer(customer_id),
+	foreign key(title_id) references customer.title(title_id)
 );
 
 -- Territory --
@@ -283,6 +296,16 @@ create table product.productProductWeigthUnit(
 	primary key (product_id),
 	foreign key (product_id) references product._product(product_id),
 	foreign key(weigthUnit_id) references product.weigthUnit(weigthUnit_id)
+);
+
+-- product productColor
+create table product.productProductColor(
+	product_id int,
+	color_id int,
+
+	primary key(product_id),
+	foreign key(product_id) references product._product(product_id),
+	foreign key(color_id) references product.productColor(productColor_id)
 );
 
 go

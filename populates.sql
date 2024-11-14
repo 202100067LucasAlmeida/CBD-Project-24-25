@@ -1,5 +1,5 @@
 -- Populate tables --
-use AdventureWorksBetter;
+use AdventureWorks;
 
 -- Table Title --
 select * from customer.title;
@@ -98,6 +98,14 @@ select distinct p.Style from AdventureWorksLegacy.dbo.Products p;
 insert into product.productStyle(productStyle_code)
 select distinct p.Style from AdventureWorksLegacy.dbo.Products p
 where p.Style != '';
+
+-- Table ProductColor
+select * from product.productColor;
+select distinct Color from AdventureWorksLegacy.dbo.Products p;
+
+insert into product.productColor
+select distinct p.Color from AdventureWorksLegacy.dbo.Products p
+where p.Color != 'NA';
 
 -- table Country
 select * from territory._group;
