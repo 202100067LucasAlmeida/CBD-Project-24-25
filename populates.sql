@@ -274,3 +274,24 @@ inner join product.color c on c.color_id = pc.color_id
 
 -- existem produtos com NA na cor 
 -- diferenca entre as queries: 341 vs 397
+
+-- table productClass
+insert into product.productClass(product_id, class_id)
+select distinct _p.product_id, c.class_id from AdventureWorksLegacy.dbo.Products p
+inner join product._product _p on _p.product_id = p.ProductKey
+inner join product.class c on c.class_code = p.Class
+where p.Class != ''
+;
+select * from product.productClass;
+
+-- table productModel
+insert into product.productModel(product_id, model_id)
+select distinct _p.product_id, m.model_id from AdventureWorksLegacy.dbo.Products p
+inner join product._product _p on _p.product_id = p.ProductKey
+inner join product.model m on m.model_name = p.ModelName
+;
+
+select p.product_name, m.model_name from product.productModel pm
+inner join product._product p on p.product_id = pm.product_id
+inner join product.model m on m.model_id = pm.model_id
+;
