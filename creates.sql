@@ -168,49 +168,49 @@ create schema product
 go
 
 -- product class
-create table product.productClass (
-	productClass_id int identity(1,1) primary key,
-	productClass_code varchar(10) not null
+create table product.class (
+	class_id int identity(1,1) primary key,
+	class_code varchar(10) not null
 );
 
 -- Product model
-create table product.productModel (
-	productModel_id int identity(1,1) primary key,
-	productModel_name varchar(100) not null
+create table product.model (
+	model_id int identity(1,1) primary key,
+	model_name varchar(100) not null
 );
 
 -- Product line
-create table product.productLine (
-	productLine_id int identity(1,1) primary key,
-	productLine_code varchar(10) not null
+create table product.line (
+	line_id int identity(1,1) primary key,
+	line_code varchar(10) not null
 );
 
 -- Product style
-create table product.productStyle (
-	productStyle_id int identity(1,1) primary key,
-	productStyle_code varchar(10) not null
+create table product.style (
+	style_id int identity(1,1) primary key,
+	style_code varchar(10) not null
 );
 
 -- Product size range
-create table product.productSizeRange (
-	productSizeRange_id int identity(1,1) primary key,
-	productSizeRange_description varchar(100) not null
+create table product.sizeRange (
+	sizeRange_id int identity(1,1) primary key,
+	sizeRange_description varchar(100) not null
 );
 
 -- Product category
-create table product.productCategory (
-	productCategory_id int identity(1,1) primary key,
-	productCategory_name varchar(100) not null,
-	productCategory_parentCategory int 
-	foreign key (productCategory_parentCategory) references product.productCategory(productCategory_id) 
+create table product.category (
+	category_id int identity(1,1) primary key,
+	category_name varchar(100) not null,
+	category_parentCategory int 
+	foreign key (category_parentCategory) references product.category(category_id) 
 		on delete no action 
 		on update no action
 );
 
 -- Product color
-create table product.productColor (
-	productColor_id int identity(1,1) primary key,
-	productColor_name varchar(100) not null
+create table product.color (
+	color_id int identity(1,1) primary key,
+	color_name varchar(100) not null
 );
 
 -- Size unit
@@ -238,37 +238,37 @@ create table product._product(
 );
 
 -- product productSizeRange
-create table product.productProductSizeRange(
+create table product.productSizeRange(
 	product_id int,
-	productSizeRange_id int,
+	sizeRange_id int,
 
 	primary key (product_id),
 	foreign key (product_id) references product._product(product_id),
-	foreign key(productSizeRange_id) references product.productSizeRange(productSizeRange_id)
+	foreign key(sizeRange_id) references product.sizeRange(sizeRange_id)
 );
 
 -- product productStyle
-create table product.productProductStyle(
+create table product.productStyle(
 	product_id int,
-	productStyle_id int,
+	style_id int,
 
 	primary key (product_id),
 	foreign key (product_id) references product._product(product_id),
-	foreign key (productStyle_id) references product.productStyle(productStyle_id)
+	foreign key (style_id) references product.style(style_id)
 );
 
 -- product productLine
-create table product.productProductLine(
+create table product.productLine(
 	product_id int,
-	productLine_id int,
+	line_id int,
 
 	primary key (product_id),
 	foreign key (product_id) references product._product(product_id),
-	foreign key (productLine_id) references product.productLine(productLine_id)
+	foreign key (line_id) references product.line(line_id)
 );
 
 -- product productSizeUnit
-create table product.productProductSizeUnit(
+create table product.productSizeUnit(
 	product_id int,
 	sizeUnit_id int,
 
@@ -278,7 +278,7 @@ create table product.productProductSizeUnit(
 );
 
 -- product productWeigthUnit
-create table product.productProductWeigthUnit(
+create table product.productWeigthUnit(
 	product_id int,
 	weigthUnit_id int,
 
@@ -288,43 +288,43 @@ create table product.productProductWeigthUnit(
 );
 
 -- product productColor
-create table product.productProductColor(
+create table product.productColor(
 	product_id int,
 	color_id int,
 
 	primary key(product_id),
 	foreign key(product_id) references product._product(product_id),
-	foreign key(color_id) references product.productColor(productColor_id)
+	foreign key(color_id) references product.color(color_id)
 );
 
 -- product productModel
-create table product.productProductModel(
+create table product.productModel(
 	product_id int,
 	model_id int,
 
 	primary key(product_id),
 	foreign key(product_id) references product._product(product_id),
-	foreign key(model_id) references product.productModel(productModel_id),
+	foreign key(model_id) references product.model(model_id),
 );
 
 -- product productClass
-create table product.productProductClass(
+create table product.productClass(
 	product_id int,
 	class_id int,
 
 	primary key(product_id),
 	foreign key(product_id) references product._product(product_id),
-	foreign key(class_id) references product.productClass(productClass_id),
+	foreign key(class_id) references product.class(class_id),
 );
 
 -- product productCategory
-create table product.productProductCategory(
+create table product.productCategory(
 	product_id int,
 	category_id int,
 
 	primary key(product_id),
 	foreign key(product_id) references product._product(product_id),
-	foreign key(category_id) references product.productCategory(productCategory_id)
+	foreign key(category_id) references product.category(category_id)
 );
 
 go
