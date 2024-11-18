@@ -255,3 +255,20 @@ select distinct
 from AdventureWorksLegacy.dbo.Products p;
 select * from product._product;
 
+
+-- table productColor
+
+insert into product.productColor(product_id, color_id)
+select _p.product_id, _p.product_name, c.color_id from AdventureWorksLegacy.dbo.Products p
+inner join product.color c on c.color_name = p.Color
+inner join product._product _p on _p.product_id = p.ProductKey
+;
+
+select distinct p.ProductKey, p.EnglishProductName, p.Color from AdventureWorksLegacy.dbo.Products p;
+select p.product_id, c.color_name from product.productColor pc
+inner join product._product p on p.product_id = pc.product_id
+inner join product.color c on c.color_id = pc.color_id
+;
+
+-- existem produtos com NA na cor 
+-- diferenca entre as queries: 341 vs 397
