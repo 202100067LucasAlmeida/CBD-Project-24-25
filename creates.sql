@@ -236,12 +236,13 @@ create table product.weigthUnit(
 -- Product
 create table product._product(
 	product_id int primary key,
-	product_description varchar(100) not null,
+	product_name nvarchar(510) not null,
+	product_description nvarchar(510) not null,
 	product_dealerPrice float,
 	product_listPrice float,
 	product_daysToManufacture float not null, -- permitir 1.5 (dia e meio)?
 	product_standardCost float,
-	product_finishedGoods binary default(1),
+	product_finishedGoods bit,
 	product_size float,
 	product_weight float	
 );
