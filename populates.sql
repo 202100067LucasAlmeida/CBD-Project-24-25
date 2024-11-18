@@ -62,48 +62,48 @@ select distinct t.SalesTerritoryGroup from AdventureWorksLegacy.dbo.SalesTerrito
 where t.SalesTerritoryGroup != 'NA';
 
 -- Table Currency
-select * from currency;
+select * from currency.currency;
 select * from AdventureWorksLegacy.dbo.Currency c;
 
-insert into currency(currency_name, currency_code)
+insert into currency.currency(currency_name, currency_code)
 select c.CurrencyName, c.CurrencyAlternateKey from AdventureWorksLegacy.dbo.Currency c;
 
--- Table ProductClass
-select * from product.productClass;
+-- Table Class
+select * from product.class;
 select distinct p.Class from AdventureWorksLegacy.dbo.Products p;
 
-insert into product.productClass(productClass_code)
+insert into product.class(class_code)
 select distinct p.Class from AdventureWorksLegacy.dbo.Products p
 where p.Class != '';
 
--- Table ProductModel
-select count(*) from product.productModel;
+-- Table Model
+select count(*) from product.model;
 select distinct count(p.ModelName) from AdventureWorksLegacy.dbo.Products p;
 
-insert into product.productModel(productModel_name)
+insert into product.model(model_name)
 select distinct p.ModelName from AdventureWorksLegacy.dbo.Products p;
 
 -- Table ProductLine
-select * from product.productLine;
+select * from product.line;
 select distinct p.ProductLine from AdventureWorksLegacy.dbo.Products p;
 
-insert into product.productLine(productLine_code)
+insert into product.line(line_code)
 select distinct p.ProductLine from AdventureWorksLegacy.dbo.Products p
 where p.ProductLine != '';
 
 -- Table ProductStyle
-select * from product.productStyle;
+select * from product.style;
 select distinct p.Style from AdventureWorksLegacy.dbo.Products p;
 
-insert into product.productStyle(productStyle_code)
+insert into product.style(style_code)
 select distinct p.Style from AdventureWorksLegacy.dbo.Products p
 where p.Style != '';
 
 -- Table ProductColor
-select * from product.productColor;
+select * from product.color;
 select distinct Color from AdventureWorksLegacy.dbo.Products p;
 
-insert into product.productColor
+insert into product.color
 select distinct p.Color from AdventureWorksLegacy.dbo.Products p
 where p.Color != 'NA';
 
@@ -193,7 +193,7 @@ select * from product.weigthUnit;
 
 -- table sizeRange ??? coisa que menos faz sentido
 -- faz sentido guardar 'NA' para quando uma medida nao esteja disponivel?
-insert into product.productSizeRange(productSizeRange_description)
+insert into product.sizeRange(sizeRange_description)
 select distinct(SizeRange) from AdventureWorksLegacy.dbo.Products where SizeRange != 'NA';
 
 select * from product.productSizeRange;
@@ -204,23 +204,23 @@ order by 'subcategory key'
 ;
 
 -- popular as principais categorias, null como parent pois nao existe nenhum acima destas
-insert into product.productCategory(productCategory_name, productCategory_parentCategory)
+insert into product.category(category_name, category_parentCategory)
 select distinct EnglishProductCategoryName as 'category', null from AdventureWorksLegacy.dbo.Products;
 
 -- popular as subcategorias, preencher com o codigo da categoria principal
-insert into product.productCategory(productCategory_name, productCategory_parentCategory)
+insert into product.category(category_name, category_parentCategory)
 select distinct ps.EnglishProductSubcategoryName as 'subcategory', 
 (
-	select productCategory_id from product.productCategory where productCategory_name = p.EnglishProductCategoryName
+	select category_id from product.category where category_name = p.EnglishProductCategoryName
 )as 'category' -- selecionar o id da categoria principal
 from AdventureWorksLegacy.dbo.Products p
 inner join AdventureWorksLegacy.dbo.ProductSubCategory ps on ps.ProductSubcategoryKey = p.ProductSubcategoryKey;
-select * from product.productCategory;
+select * from product.category;
 
 -- testar populate
 select 
-	productCategory_name as 'category',
+	category_name as 'category',
 	(
-		select productCategory_name from product.productCategory pc where pc.productCategory_id = p.productCategory_parentCategory
+		select category_name from product.category pc where pc.category_id = p.category_parentCategory
 	)as 'is subcategory of'
-from product.productCategory p;
+from product.category p;
