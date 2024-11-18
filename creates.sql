@@ -46,7 +46,11 @@ create table customer.education(
 	primary key(education_id)
 );
 
-create table _user(
+go
+create schema _security;
+go
+
+create table _security._user(
 	_user_id int identity(1,1) not null,
 	user_email char(30) not null,
 	user_password char(30) not null,
@@ -54,7 +58,7 @@ create table _user(
 	primary key(_user_id)
 );
 
-create table question(
+create table _security.question(
 	question_id int identity(1,1) not null,
 	security_question char(30) not null,
 	primary key(question_id)
@@ -85,8 +89,8 @@ create table customer.customer(
 	foreign key(marital_id) references customer.marital(marital_id),
 	foreign key(occupation_id) references customer.occupation(occupation_id),
 	foreign key(education_id) references customer.education(education_id),
-	foreign key(_user_id) references _user(_user_id),
-	foreign key(question_id) references question(question_id)
+	foreign key(_user_id) references _security._user(_user_id),
+	foreign key(question_id) references _security.question(question_id)
 );
 
 create table customer.customerTitle(
@@ -164,7 +168,7 @@ create table currency(
 );
 
 go
-create schema product
+create schema product;
 go
 
 -- product class
