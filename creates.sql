@@ -243,7 +243,7 @@ create table product._product(
 	product_daysToManufacture float not null, -- permitir 1.5 (dia e meio)?
 	product_standardCost float,
 	product_finishedGoods bit,
-	product_size float,
+	product_size varchar(10),
 	product_weight float	
 );
 
