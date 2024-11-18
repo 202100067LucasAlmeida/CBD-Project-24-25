@@ -264,7 +264,9 @@ inner join product.color c on c.color_name = p.Color
 inner join product._product _p on _p.product_id = p.ProductKey
 ;
 
-select distinct p.ProductKey, p.EnglishProductName, p.Color from AdventureWorksLegacy.dbo.Products p;
+select distinct p.ProductKey, p.EnglishProductName, p.Color from AdventureWorksLegacy.dbo.Products p
+where p.Color != 'NA' -- com o where a conta dá certa
+;
 select p.product_id, c.color_name from product.productColor pc
 inner join product._product p on p.product_id = pc.product_id
 inner join product.color c on c.color_id = pc.color_id
