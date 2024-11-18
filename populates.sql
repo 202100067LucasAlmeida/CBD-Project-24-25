@@ -224,3 +224,34 @@ select
 		select category_name from product.category pc where pc.category_id = p.category_parentCategory
 	)as 'is subcategory of'
 from product.category p;
+
+-- table products
+insert into product._product(
+	product_id,
+	product_name,
+	product_description,
+	product_dealerPrice,
+	product_listPrice,
+	product_daysToManufacture,
+	product_standardCost,
+	product_finishedGoods,
+	product_size,
+	product_weight
+)
+select distinct 
+	p.ProductKey,
+	p.EnglishProductName,
+	p.EnglishDescription,
+	p.DealerPrice,
+	p.ListPrice,
+	p.DaysToManufacture,
+	p.StandardCost,
+	case
+		when p.FinishedGoodsFlag = 1 then 1
+		else 0
+	end as FinishedGoodsFlag,
+	p.Size,
+	p.Weight
+from AdventureWorksLegacy.dbo.Products p;
+select * from product._product;
+
