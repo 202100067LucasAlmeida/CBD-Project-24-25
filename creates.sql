@@ -47,10 +47,10 @@ create table customer.education(
 );
 
 go
-create schema _security;
+create schema security;
 go
 
-create table _security._user(
+create table security._user(
 	_user_id int identity(1,1) not null,
 	user_email char(30) not null,
 	user_password char(30) not null,
@@ -58,7 +58,7 @@ create table _security._user(
 	primary key(_user_id)
 );
 
-create table _security.question(
+create table security.question(
 	question_id int identity(1,1) not null,
 	security_question char(30) not null,
 	primary key(question_id)
@@ -89,8 +89,8 @@ create table customer.customer(
 	foreign key(marital_id) references customer.marital(marital_id),
 	foreign key(occupation_id) references customer.occupation(occupation_id),
 	foreign key(education_id) references customer.education(education_id),
-	foreign key(_user_id) references _security._user(_user_id),
-	foreign key(question_id) references _security.question(question_id)
+	foreign key(_user_id) references security._user(_user_id),
+	foreign key(question_id) references security.question(question_id)
 );
 
 create table customer.customerTitle(
@@ -161,14 +161,19 @@ add constraint fk_customer_city
 foreign key (city_id, state_id, region_id) references territory.city(city_id, state_id, region_id);
 
 -- Currency --
-create table currency(
+
+go
+create schema currency
+go
+
+create table currency.currency(
 	currency_id int identity(1,1) primary key, -- auto increment
 	currency_name varchar(40) not null,
 	currency_code char(10) not null -- Code s� com uma letra n� Morais porra
 );
 
 go
-create schema product;
+create schema product
 go
 
 -- product class
@@ -345,7 +350,7 @@ create table sales.salesHeader(
 	currency_id int,
 	country_id int,
 
-	foreign key(currency_id) references currency(currency_id),
+	foreign key(currency_id) references currency.currency(currency_id),
 	foreign key(country_id) references territory.country(country_id)
 );
 -- Sales details
