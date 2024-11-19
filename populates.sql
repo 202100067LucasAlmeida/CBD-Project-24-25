@@ -1,7 +1,21 @@
--- Populate tables --
+/*
+ * O ficheiro populates.sql é responsável pela população de todas as tabelas criadas
+ * na nova base de dados AdventureWorks.
+ *
+ * ========== PROGRAMADORES ==========
+ * Lucas Alexandre S. F. de Almeida - 202100067
+ * João Pedro M. Morais - 202001541
+ *
+ * ========== DOCENTE ==========
+ * Professor Luís Damas <3
+ *
+ */
 use AdventureWorks;
 
--- Table Title --
+/* ==================================
+ * ========== Table Title ===========
+ * ==================================
+ */
 select * from customer.title;
 select distinct c.Title from AdventureWorksLegacy.dbo.Customer c;
 
@@ -9,7 +23,10 @@ insert into customer.title(title_description)
 select distinct c.Title from AdventureWorksLegacy.dbo.Customer c
 where c.Title != '';
 
--- Table Gender --
+/* ===================================
+ * ========== Table Gender ===========
+ * ===================================
+ */
 select * from customer.gender;
 select distinct c.Gender from AdventureWorksLegacy.dbo.Customer c;
 
@@ -21,7 +38,10 @@ case
 end
 from AdventureWorksLegacy.dbo.Customer c
 
--- Table Marital
+/* ====================================
+ * ========== Table Marital ===========
+ * ====================================
+ */
 select * from customer.marital;
 select distinct c.MaritalStatus from AdventureWorksLegacy.dbo.Customer c;
 
@@ -33,27 +53,45 @@ case
 end
 from AdventureWorksLegacy.dbo.Customer c
 
--- Table Occupation
+/* =======================================
+ * ========== Table Occupation ===========
+ * =======================================  
+ */
 select * from customer.occupation;
 select distinct c.Occupation from AdventureWorksLegacy.dbo.Customer c;
 
 insert into customer.occupation(occupation_name)
 select distinct c.Occupation from AdventureWorksLegacy.dbo.Customer c;
 
--- Table Education
+/* ======================================
+ * ========== Table Education ===========
+ * ======================================
+ */
 select * from customer.education;
 select distinct c.Education from AdventureWorksLegacy.dbo.Customer c;
 
 insert into customer.education(education_name)
 select distinct c.Education from AdventureWorksLegacy.dbo.Customer c;
 
--- Table _user
+/* =================================
+ * ========== Table User ===========
+ * =================================
+ */
 
--- Table Question
+ /* ====================================
+ * ========== Table Question ===========
+ * =====================================
+ */
 
--- Table Customer
+/* =====================================
+ * ========== Table Customer ===========
+ * =====================================
+ */
 
--- Table Group
+/* ==================================
+ * ========== Table Group ===========
+ * ==================================
+ */
 select * from territory._group;
 select distinct t.SalesTerritoryGroup from AdventureWorksLegacy.dbo.SalesTerritory t;
 
@@ -61,14 +99,20 @@ insert into territory._group(group_name)
 select distinct t.SalesTerritoryGroup from AdventureWorksLegacy.dbo.SalesTerritory t
 where t.SalesTerritoryGroup != 'NA';
 
--- Table Currency
+/* =====================================
+ * ========== Table Currency ===========
+ * =====================================
+ */
 select * from currency.currency;
 select * from AdventureWorksLegacy.dbo.Currency c;
 
 insert into currency.currency(currency_name, currency_code)
 select c.CurrencyName, c.CurrencyAlternateKey from AdventureWorksLegacy.dbo.Currency c;
 
--- Table Class
+/* ==================================
+ * ========== Table Class ===========
+ * ==================================
+ */
 select * from product.class;
 select distinct p.Class from AdventureWorksLegacy.dbo.Products p;
 
@@ -76,14 +120,20 @@ insert into product.class(class_code)
 select distinct p.Class from AdventureWorksLegacy.dbo.Products p
 where p.Class != '';
 
--- Table Model
-select count(*) from product.model;
-select distinct count(p.ModelName) from AdventureWorksLegacy.dbo.Products p;
+/* ==================================
+ * ========== Table Model ===========
+ * ==================================
+ */
+select * from product.model;
+select distinct p.ModelName from AdventureWorksLegacy.dbo.Products p;
 
 insert into product.model(model_name)
 select distinct p.ModelName from AdventureWorksLegacy.dbo.Products p;
 
--- Table ProductLine
+/* =================================
+ * ========== Table Line ===========
+ * =================================
+ */
 select * from product.line;
 select distinct p.ProductLine from AdventureWorksLegacy.dbo.Products p;
 
@@ -91,7 +141,10 @@ insert into product.line(line_code)
 select distinct p.ProductLine from AdventureWorksLegacy.dbo.Products p
 where p.ProductLine != '';
 
--- Table ProductStyle
+/* ==================================
+ * ========== Table Style ===========
+ * ==================================
+ */
 select * from product.style;
 select distinct p.Style from AdventureWorksLegacy.dbo.Products p;
 
@@ -107,7 +160,10 @@ insert into product.color
 select distinct p.Color from AdventureWorksLegacy.dbo.Products p
 where p.Color != 'NA';
 
--- table Country
+/* ====================================
+ * ========== Table Country ===========
+ * ====================================
+ */
 select * from territory._group;
 select * from territory.country;
 
@@ -119,7 +175,10 @@ on st.SalesTerritoryGroup = g.group_name
 inner join AdventureWorksLegacy.dbo.Customer c
 on st.SalesTerritoryKey = c.SalesTerritoryKey;
 
--- table region
+/* ===================================
+ * ========== Table Region ===========
+ * ===================================
+ */
 select * from territory.region;
 select * from territory.country;
 select 
@@ -133,10 +192,13 @@ on c.SalesTerritoryKey = st.SalesTerritoryKey;
 
 insert into territory.region(country_id, region_name)
 select country_id, st.SalesTerritoryRegion
-from territory.country c join AdventureWorksLegacy.dbo.SalesTerritory st on c.country_name = st.SalesTerritoryCountry;
-select * from territory.region;
+from territory.country c 
+join AdventureWorksLegacy.dbo.SalesTerritory st on c.country_name = st.SalesTerritoryCountry;
 
--- table _state
+/* ==================================
+ * ========== Table State ===========
+ * ==================================
+ */
 select * from territory._state;
 select 
 	SalesTerritoryRegion,
@@ -159,7 +221,10 @@ inner join territory.region r on r.region_name = st.SalesTerritoryRegion
 inner join AdventureWorksLegacy.dbo.Customer c
 on c.SalesTerritoryKey = st.SalesTerritoryKey;
 
--- table city
+/* =================================
+ * ========== Table City ===========
+ * =================================
+ */
 insert into territory.city(state_id, region_id, city_name, postal_code)
 select distinct
 	s.state_id,
@@ -179,35 +244,49 @@ inner join territory._state s on s.state_id = c.state_id
 inner join territory.region r on r.region_id = c.region_id
 ;
 
--- table sizeUnit
+/* ======================================
+ * ========== Table Size Unit ===========
+ * ======================================
+ */
 insert into product.sizeUnit(sizeUnit_description)
 select distinct(SizeUnitMeasureCode) from AdventureWorksLegacy.dbo.Products where SizeUnitMeasureCode != '';
 
 select * from product.sizeUnit;
 
--- table weigthUnit
+/* ========================================
+ * ========== Table Weight Unit ===========
+ * ========================================
+ */
 insert into product.weigthUnit(weigthUnit_description)
 select distinct(WeightUnitMeasureCode) from AdventureWorksLegacy.dbo.Products where WeightUnitMeasureCode != '';
 
 select * from product.weigthUnit;
 
--- table sizeRange ??? coisa que menos faz sentido
+/* =======================================
+ * ========== Table Size Range ===========
+ * =======================================
+ */
 -- faz sentido guardar 'NA' para quando uma medida nao esteja disponivel?
+-- NA são produtos que não tem tamanho, não é que não esteja disponível.  - L
 insert into product.sizeRange(sizeRange_description)
 select distinct(SizeRange) from AdventureWorksLegacy.dbo.Products where SizeRange != 'NA';
 
-select * from product.productSizeRange;
--- table category
+select * from product.SizeRange;
+
+/* ==================================
+ * ========== Table Category ===========
+ * ==================================
+ */
 select distinct ps.EnglishProductSubcategoryName as 'subcategory', ps.ProductSubcategoryKey as 'subcategory key', p.EnglishProductCategoryName as 'category' from AdventureWorksLegacy.dbo.Products p
 inner join AdventureWorksLegacy.dbo.ProductSubCategory ps on ps.ProductSubcategoryKey = p.ProductSubcategoryKey
 order by 'subcategory key'
 ;
 
--- popular as principais categorias, null como parent pois nao existe nenhum acima destas
+-- 1° Passo - popular as principais categorias, null como parent pois nao existe nenhum acima destas
 insert into product.category(category_name, category_parentCategory)
 select distinct EnglishProductCategoryName as 'category', null from AdventureWorksLegacy.dbo.Products;
 
--- popular as subcategorias, preencher com o codigo da categoria principal
+-- 2° Passo - popular as subcategorias, preencher com o codigo da categoria principal
 insert into product.category(category_name, category_parentCategory)
 select distinct ps.EnglishProductSubcategoryName as 'subcategory', 
 (
@@ -215,17 +294,13 @@ select distinct ps.EnglishProductSubcategoryName as 'subcategory',
 )as 'category' -- selecionar o id da categoria principal
 from AdventureWorksLegacy.dbo.Products p
 inner join AdventureWorksLegacy.dbo.ProductSubCategory ps on ps.ProductSubcategoryKey = p.ProductSubcategoryKey;
+
 select * from product.category;
 
--- testar populate
-select 
-	category_name as 'category',
-	(
-		select category_name from product.category pc where pc.category_id = p.category_parentCategory
-	)as 'is subcategory of'
-from product.category p;
-
--- table products
+/* ====================================
+ * ========== Table Product ===========
+ * ====================================
+ */
 insert into product._product(
 	product_id,
 	product_name,
@@ -256,13 +331,15 @@ from AdventureWorksLegacy.dbo.Products p;
 select * from product._product;
 
 
--- table productColor
+/* ==========================================
+ * ========== Table Product Color ===========
+ * ==========================================
+ */
 
 insert into product.productColor(product_id, color_id)
 select _p.product_id, _p.product_name, c.color_id from AdventureWorksLegacy.dbo.Products p
 inner join product.color c on c.color_name = p.Color
-inner join product._product _p on _p.product_id = p.ProductKey
-;
+inner join product._product _p on _p.product_id = p.ProductKey;
 
 select distinct p.ProductKey, p.EnglishProductName, p.Color from AdventureWorksLegacy.dbo.Products p
 where p.Color != 'NA' -- com o where a conta dá certa
