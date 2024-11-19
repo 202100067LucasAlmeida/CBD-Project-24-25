@@ -399,12 +399,37 @@ inner join product.category c on c.category_id = pc.category_id
 inner join product.category cc on cc.category_id = c.category_parentCategory;
 
 -- productSizeRange
---select * from product.sizeRange;
---select * from AdventureWorksLegacy.dbo.Products p;
+select * from product.sizeRange;
+
+insert into product.productSizeRange(product_id, sizeRange_id)
+select distinct _p.product_id, sr.sizeRange_id 
+from AdventureWorksLegacy.dbo.Products p
+inner join product._product _p on _p.product_id = p.ProductKey
+inner join product.sizeRange sr on sr.sizeRange_description = p.SizeRange
+;
+
 -- productSizeUnit
+insert into product.productSizeUnit(product_id, sizeUnit_id)
+select distinct _p.product_id, su.sizeUnit_id
+from AdventureWorksLegacy.dbo.Products p
+inner join product._product _p on _p.product_id = p.ProductKey
+inner join product.sizeUnit su on su.sizeUnit_description = p.SizeUnitMeasureCode
+;
 
 -- productWeigthUnit
+insert into product.productWeigthUnit(product_id, weigthUnit_id)
+select distinct _p.product_id, wu.weigthUnit_id
+from AdventureWorksLegacy.dbo.Products p
+inner join product._product _p on _p.product_id = p.ProductKey
+inner join product.weigthUnit wu on wu.weigthUnit_description = p.WeightUnitMeasureCode
+;
 
 -- productStyle
+insert into product.productStyle(product_id, style_id)
+select distinct _p.product_id, s.style_id
+from AdventureWorksLegacy.dbo.Products p
+inner join product._product _p on _p.product_id = p.ProductKey
+inner join product.style s on s.style_code = p.Style
+;
 
 -- customer
