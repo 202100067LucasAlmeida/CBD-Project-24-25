@@ -337,7 +337,7 @@ select * from product._product;
  */
 
 insert into product.productColor(product_id, color_id)
-select _p.product_id, _p.product_name, c.color_id from AdventureWorksLegacy.dbo.Products p
+select _p.product_id, c.color_id from AdventureWorksLegacy.dbo.Products p
 inner join product.color c on c.color_name = p.Color
 inner join product._product _p on _p.product_id = p.ProductKey;
 
@@ -372,3 +372,39 @@ select p.product_name, m.model_name from product.productModel pm
 inner join product._product p on p.product_id = pm.product_id
 inner join product.model m on m.model_id = pm.model_id
 ;
+
+-- productLine
+insert into product.productLine(product_id, line_id)
+select distinct _p.product_id, l.line_id from AdventureWorksLegacy.dbo.Products p
+inner join product._product _p on _p.product_id = p.ProductKey
+inner join product.line l on l.line_code = p.ProductLine
+;
+select * from product.productLine;
+
+-- productCategory
+insert into product.productCategory(product_id, category_id)
+select distinct _p.product_id, c.category_id
+from AdventureWorksLegacy.dbo.Products p
+inner join product._product _p on _p.product_id = p.ProductKey
+inner join product.category c on c.category_id = p.ProductSubcategoryKey;
+
+--teste: listar um produto, categoria e subcategoria
+select distinct
+ p.product_id
+ ,cc.category_name as 'category'
+ ,c.category_name as 'subcategory'
+from product.productCategory pc
+inner join product._product p on p.product_id = pc.product_id
+inner join product.category c on c.category_id = pc.category_id
+inner join product.category cc on cc.category_id = c.category_parentCategory;
+
+-- productSizeRange
+--select * from product.sizeRange;
+--select * from AdventureWorksLegacy.dbo.Products p;
+-- productSizeUnit
+
+-- productWeigthUnit
+
+-- productStyle
+
+-- customer
