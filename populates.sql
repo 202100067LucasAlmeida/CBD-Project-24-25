@@ -433,3 +433,5 @@ inner join product.style s on s.style_code = p.Style
 ;
 
 -- customer
+select * from AdventureWorksLegacy.dbo.Customer;
+select * from customer.customer;
