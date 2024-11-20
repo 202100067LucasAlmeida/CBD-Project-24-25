@@ -110,7 +110,6 @@ create table security._user(
 	_user_id int identity(1,1) not null,
 	user_email char(30) not null,
 	user_password char(30) not null,
-	user_answer varchar(200),
 	primary key(_user_id)
 );
 
@@ -131,7 +130,7 @@ create table security.question(
 create table security.userQuestion(
 	_user_id int,
 	question_id int,
-	answer varchar(100)
+	answer varchar(200)
 
 	primary key(_user_id),
 	foreign key(_user_id) references security._user(_user_id),
@@ -231,6 +230,7 @@ create table customer.customer(
 	first_name char(30) not null,
 	middle_name char(30),
 	last_name char(30) not null,
+	email varchar(300) not null,
 	customer_address char(50) not null,
 	customer_phone char(15) not null,
 	yearly_income int not null,
