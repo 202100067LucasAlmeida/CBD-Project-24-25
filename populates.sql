@@ -433,5 +433,24 @@ inner join product.style s on s.style_code = p.Style
 ;
 
 -- customer
-select * from AdventureWorksLegacy.dbo.Customer;
+insert into customer.customer(customer_id, first_name, middle_name, last_name, email, customer_address, customer_phone, yearly_income, cars_owned, birth_date, first_purchase)
+select distinct
+	c.CustomerKey,
+	c.FirstName,
+	case
+		when c.MiddleName is not NULL then c.MiddleName
+		when c.MiddleName is NULL then ''
+	end as MiddleName,
+	c.LastName,
+	c.EmailAddress,
+	c.AddressLine1,
+	c.Phone,
+	c.YearlyIncome,
+	c.NumberCarsOwned,
+	c.BirthDate,
+	c.DateFirstPurchase
+from AdventureWorksLegacy.dbo.Customer c	
+;
 select * from customer.customer;
+
+
