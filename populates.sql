@@ -453,4 +453,67 @@ from AdventureWorksLegacy.dbo.Customer c
 ;
 select * from customer.customer;
 
+-- customer title
+select * from customer.title;
+
+insert into customer.customerTitle(customer_id, title_id)
+select distinct cc.customer_id, t.title_id
+from AdventureWorksLegacy.dbo.Customer c
+inner join customer.customer cc on cc.customer_id = c.CustomerKey
+inner join customer.title t on t.title_description = c.Title
+;
+
+-- customer gender
+select * from customer.gender;
+
+insert into customer.customerGender(customer_id, gender_id)
+select distinct cc.customer_id, g.gender_id
+from AdventureWorksLegacy.dbo.Customer c
+inner join customer.customer cc on cc.customer_id = c.CustomerKey
+inner join customer.gender g on g.gender_code = c.Gender
+;
+
+-- customer occupation
+select * from customer.occupation;
+
+insert into customer.customerOccupation(customer_id, occupation_id)
+select distinct cc.customer_id, o.occupation_id
+from AdventureWorksLegacy.dbo.Customer c
+inner join customer.customer cc on cc.customer_id = c.CustomerKey
+inner join customer.occupation o on o.occupation_name = c.Occupation
+;
+
+-- customer marital
+select * from customer.marital;
+
+insert into customer.customerMarital(customer_id, marital_id)
+select distinct cc.customer_id, m.marital_id
+from AdventureWorksLegacy.dbo.Customer c
+inner join customer.customer cc on cc.customer_id = c.CustomerKey
+inner join customer.marital m on m.marital_code = c.MaritalStatus
+;
+
+-- customer education
+select * from customer.education;
+
+insert into customer.customerEducation(customer_id, education_id)
+select distinct cc.customer_id, e.education_id
+from AdventureWorksLegacy.dbo.Customer c
+inner join customer.customer cc on cc.customer_id = c.CustomerKey
+inner join customer.education e on e.education_name = c.Education
+;
+
+-- customer city
+select * from customer.customerCity;
+
+insert into customer.customerCity(customer_id, city_id, state_id, region_id)
+select distinct cc.customer_id, ct.city_id, ct.state_id, ct.region_id
+from AdventureWorksLegacy.dbo.Customer c
+inner join customer.customer cc on cc.customer_id = c.CustomerKey
+inner join territory.city ct on ct.city_name = c.City and ct.postal_code = c.PostalCode
+where cc.customer_id = 11332
+;
+
+
+-- customer user
 
