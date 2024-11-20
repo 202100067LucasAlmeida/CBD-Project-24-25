@@ -610,59 +610,78 @@ go
 create schema sales
 go
 
-/* ====================================
- * ========== Sales Header ============
- * ====================================
+/* =====================================
+ * ========== Sales ============
+ * =====================================
  *
- * Tabela dedicada a guardar a informação do Cabeçalho de vendas.
+ * Tabela dedicada a guardar a informação das Vendas.
  */
-create table sales.salesHeader(
-	salesHeader_id int identity(1,1) primary key,
-	salesHeader_dueDate date not null,
-	salesHeader_orderDate date not null,
-	salesHeader_shipDate date not null
+create table sales.sales(
+	sales_id int identity(1,1) primary key,
+	sales_lineNumber int not null,
+	sales_quantity int not null,
+	sales_unitPrice float not null,
+	sales_taxAmount float not null,
+	sales_freight float not null,
+	sales_dueDate date not null,
+	sales_orderDate date not null,
+	sales_shipDate date not null
 );
 
 /* =====================================
- * ========== Sales Details ============
+ * ========== Product Sales ============
  * =====================================
  *
- * Tabela dedicada a guardar a informação dos Detalhes de vendas.
+ * Tabela dedicada a guardar a informação relacionada dos Produtos as Vendas.
  */
-create table sales.salesDetails(
-	salesDetails_id int identity(1,1) primary key,
-	salesDetails_lineNumber int not null,
-	salesDetails_quantity int not null,
-	salesDetails_unitPrice float not null,
-	salesDetails_taxAmount float not null,
-	salesDetails_freight float not null
-);
-
-/* ============================================
- * ========== Sales Header Details ============
- * ============================================
- *
- * Tabela dedicada a guardar a informação relacionada dos Detalhos ao Cabeçalho de vendas.
- */
-create table sales.salesHeaderDetails(
-	salesHeader_id int,
-	salesDetails_id int,
-
-	primary key(salesHeader_id, salesDetails_id),
-	foreign key(salesHeader_id) references sales.salesHeader(salesHeader_id),
-	foreign key (salesDetails_id) references sales.salesDetails(salesDetails_id)
-);
-
-/* =============================================
- * ========== Product Sales Details ============
- * =============================================
- *
- * Tabela dedicada a guardar a informação relacionada dos Produtos aos Detalhes de vendas.
- */
-create table sales.productSalesDetails(
-	salesDetails_id int,
+create table sales.productSales(
+	sales_id int,
 	product_id int,
 	primary key(salesDetails_id, product_id),
-	foreign key(salesDetails_id) references sales.salesDetails(salesDetails_id),
+	foreign key(salesDetails_id) references sales.sales(sales_id),
 	foreign key(product_id) references product._product(product_id)
 );
+
+/* ======================================
+ * ========== Sales Currency ============
+ * ======================================
+ *
+ * Tabela dedicada a guardar a informação relacionada das Moedas as Vendas.
+ */
+
+ create table sales.currencySales(
+	sales_id int,
+	currency_id int,
+	primary key(sales_id, currency_id),
+	foreign key(sales_id) references sales.sales(sales_id),
+	foreign key(currency_id) references currency.currency(currency_id)
+ );
+
+/* =====================================
+ * ========== Sales Country ============
+ * =====================================
+ *
+ * Tabela dedicada a guardar a informação relacionada dos Países as Vendas.
+ */
+
+ create table sales.countrySales(
+	sales_id int,
+	country_id int,
+	primary key(sales_id, country_id),
+	foreign key(sales_id) references sales.sales(sales_id),
+	foreign key(country_id) references territory.country(country_id)
+ );
+
+/* ======================================
+ * ========== Sales Customer ============
+ * ======================================
+ *
+ * Tabela dedicada a guardar a informação relacionada dos Clientes as Vendas.
+ */
+ create table sales.customerSales(
+	sales_id int,
+	customer_id int,
+	primary key(sales_id, customer_id),
+	foreign key(sales_id) references sales.sales(sales_id),
+	foreign key(customer_id) references customer.customer(customer_id)
+ );
