@@ -231,8 +231,8 @@ create table customer.customer(
 	middle_name char(30),
 	last_name char(30) not null,
 	email varchar(300) not null,
-	customer_address char(50) not null,
-	customer_phone char(15) not null,
+	customer_address varchar(200) not null,
+	customer_phone varchar(30) not null,
 	yearly_income int not null,
 	cars_owned int not null,
 	birth_date date not null,
@@ -304,7 +304,7 @@ create table customer.customerUser(
  * Tabela dedicada a guardar a informação de Clientes que tem títulos atribuídos.
  */
 create table customer.customerTitle(
-	customer_id int not null,
+	customer_id int,
 	title_id int,
 	primary key(customer_id),
 	foreign key(customer_id) references customer.customer(customer_id),
