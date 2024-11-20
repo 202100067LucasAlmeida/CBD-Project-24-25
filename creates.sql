@@ -11,6 +11,9 @@
  *
  */
 
+--exec sp_who;
+--KILL 51;
+
 use master;
 drop database if exists AdventureWorks;
 create database AdventureWorks; 
@@ -616,8 +619,8 @@ go
  *
  * Tabela dedicada a guardar a informação das Vendas.
  */
-create table sales.sales(
-	sales_id int identity(1,1) primary key,
+create table sales.sale(
+	sales_id varchar(20),
 	sales_lineNumber int not null,
 	sales_quantity int not null,
 	sales_unitPrice float not null,
@@ -625,7 +628,9 @@ create table sales.sales(
 	sales_freight float not null,
 	sales_dueDate date not null,
 	sales_orderDate date not null,
-	sales_shipDate date not null
+	sales_shipDate date not null,
+
+	primary key(sales_id, sales_lineNumber)
 );
 
 /* =====================================
@@ -634,11 +639,12 @@ create table sales.sales(
  *
  * Tabela dedicada a guardar a informação relacionada dos Produtos as Vendas.
  */
-create table sales.productSales(
-	sales_id int,
+create table sales.saleProducts(
+	sales_id varchar(20),
+	sales_lineNumber int,
 	product_id int,
-	primary key(salesDetails_id, product_id),
-	foreign key(salesDetails_id) references sales.sales(sales_id),
+	primary key(sales_id, sales_lineNumber, product_id),
+	foreign key(sales_id, sales_lineNumber) references sales.sale(sales_id, sales_lineNumber),
 	foreign key(product_id) references product._product(product_id)
 );
 
@@ -649,11 +655,12 @@ create table sales.productSales(
  * Tabela dedicada a guardar a informação relacionada das Moedas as Vendas.
  */
 
- create table sales.currencySales(
-	sales_id int,
+ create table sales.saleCurrency(
+	sales_id varchar(20),
+	sales_lineNumber int,
 	currency_id int,
-	primary key(sales_id, currency_id),
-	foreign key(sales_id) references sales.sales(sales_id),
+	primary key(sales_id, sales_lineNumber, currency_id),
+	foreign key(sales_id, sales_lineNumber) references sales.sale(sales_id, sales_lineNumber),
 	foreign key(currency_id) references currency.currency(currency_id)
  );
 
@@ -664,11 +671,12 @@ create table sales.productSales(
  * Tabela dedicada a guardar a informação relacionada dos Países as Vendas.
  */
 
- create table sales.countrySales(
-	sales_id int,
+ create table sales.saleCountry(
+	sales_id varchar(20),
+	sales_lineNumber int,
 	country_id int,
-	primary key(sales_id, country_id),
-	foreign key(sales_id) references sales.sales(sales_id),
+	primary key(sales_id, sales_lineNumber, country_id),
+	foreign key(sales_id, sales_lineNumber) references sales.sale(sales_id, sales_lineNumber),
 	foreign key(country_id) references territory.country(country_id)
  );
 
@@ -678,10 +686,11 @@ create table sales.productSales(
  *
  * Tabela dedicada a guardar a informação relacionada dos Clientes as Vendas.
  */
- create table sales.customerSales(
-	sales_id int,
+ create table sales.saleCustomer(
+	sales_id varchar(20),
+	sales_lineNumber int,
 	customer_id int,
-	primary key(sales_id, customer_id),
-	foreign key(sales_id) references sales.sales(sales_id),
+	primary key(sales_id, sales_lineNumber, customer_id),
+	foreign key(sales_id, sales_lineNumber) references sales.sale(sales_id, sales_lineNumber),
 	foreign key(customer_id) references customer.customer(customer_id)
  );

@@ -517,4 +517,57 @@ where s.state_code = c.StateProvinceCode
 ;
 
 
--- customer user
+--sales
+
+insert into sales.sale(sales_id, sales_lineNumber, sales_quantity, sales_unitPrice, sales_taxAmount, sales_freight, sales_dueDate, sales_orderDate, sales_shipDate)
+select distinct
+	s.SalesOrderNumber,
+	s.SalesOrderLineNumber,
+	s.OrderQuantity,
+	s.UnitPrice,
+	s.TaxAmt,
+	s.Freight,
+	CAST(s.DueDate AS DATE) as 'DueDate',
+	CAST(s.OrderDate AS DATE) as 'OrderDate',
+	CAST(s.ShipDate AS DATE) as 'ShipDate'
+from AdventureWorksLegacy.dbo.Sales s
+order by SalesOrderNumber, SalesOrderLineNumber
+;
+select * from sales.sale;
+
+-- saleCountry
+insert into sales.saleCountry(sales_id, sales_lineNumber, country_id)
+select distinct ss.sales_id, ss.sales_lineNumber, c.country_id
+from AdventureWorksLegacy.dbo.Sales s
+inner join AdventureWorksLegacy.dbo.SalesTerritory st on st.SalesTerritoryKey = s.SalesTerritoryKey
+inner join sales.sale ss on s.SalesOrderNumber = ss.sales_id and s.SalesOrderLineNumber = ss.sales_lineNumber
+inner join territory.country c on c.country_name = st.SalesTerritoryCountry
+order by ss.sales_id, ss.sales_lineNumber
+;
+
+-- saleCurrency
+insert into sales.saleCurrency(sales_id, sales_lineNumber, currency_id)
+select distinct ss.sales_id, ss.sales_lineNumber, c.currency_id
+from AdventureWorksLegacy.dbo.Sales s
+inner join sales.sale ss on s.SalesOrderNumber = ss.sales_id and s.SalesOrderLineNumber = ss.sales_lineNumber
+inner join currency.currency c on c.currency_id = s.CurrencyKey
+order by ss.sales_id, ss.sales_lineNumber
+;
+
+-- saleCustomer
+insert into sales.saleCustomer(sales_id, sales_lineNumber, customer_id)
+select distinct ss.sales_id, ss.sales_lineNumber, c.customer_id
+from AdventureWorksLegacy.dbo.Sales s
+inner join sales.sale ss on s.SalesOrderNumber = ss.sales_id and s.SalesOrderLineNumber = ss.sales_lineNumber
+inner join customer.customer c on c.customer_id = s.CustomerKey
+order by ss.sales_id, ss.sales_lineNumber
+;
+
+-- saleProducts
+insert into sales.saleProducts(sales_id, sales_lineNumber, product_id)
+select distinct ss.sales_id, ss.sales_lineNumber, p.product_id
+from AdventureWorksLegacy.dbo.Sales s
+inner join sales.sale ss on s.SalesOrderNumber = ss.sales_id and s.SalesOrderLineNumber = ss.sales_lineNumber
+inner join product._product p on p.product_id = s.ProductKey
+order by ss.sales_id, ss.sales_lineNumber
+;
