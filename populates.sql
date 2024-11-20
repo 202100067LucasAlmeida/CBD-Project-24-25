@@ -519,3 +519,15 @@ where s.state_code = c.StateProvinceCode
 
 -- customer user
 
+
+-- Sales Header
+select * from sales.salesHeader;
+select * from AdventureWorksLegacy.dbo.Sales;
+
+insert into sales.salesHeader(salesHeader_dueDate, salesHeader_orderDate
+							  , salesHeader_shipDate)
+select distinct CAST(s.DueDate AS DATE), CAST(s.OrderDate AS date), CAST(s.ShipDate AS DATE)
+from AdventureWorksLegacy.dbo.Sales s
+
+-- Sales Details
+select * from sales.salesDetails;

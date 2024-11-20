@@ -480,9 +480,9 @@ create table product.productSizeRange(
 	foreign key(sizeRange_id) references product.sizeRange(sizeRange_id)
 );
 
-/* ==========================================
+/* =====================================
  * ========== Product Style ============
- * ==========================================
+ * =====================================
  *
  * Tabela dedicada a guardar a informação de Produtos que tem Estilos atribuídos.
  */
@@ -495,9 +495,9 @@ create table product.productSizeRange(
 	foreign key (style_id) references product.style(style_id)
 );
 
-/* ==========================================
+/* ====================================
  * ========== Product Line ============
- * ==========================================
+ * ====================================
  *
  * Tabela dedicada a guardar a informação de Produtos que tem Linhas de produto atribuídas.
  */
@@ -600,9 +600,9 @@ create table product.productCategory(
 	foreign key(category_id) references product.category(category_id)
 );
 
-/* =====================================
+/* ==================================
  * ========== Schema Sales ==========
- * =====================================
+ * ==================================
  * 
  * Schema dedicado a todas as informações referentes as Vendas.
  */
@@ -620,18 +620,12 @@ create table sales.salesHeader(
 	salesHeader_id int identity(1,1) primary key,
 	salesHeader_dueDate date not null,
 	salesHeader_orderDate date not null,
-	salesHeader_shipDate date not null,
-
-	currency_id int,
-	country_id int,
-
-	foreign key(currency_id) references currency.currency(currency_id),
-	foreign key(country_id) references territory.country(country_id)
+	salesHeader_shipDate date not null
 );
 
-/* ====================================
+/* =====================================
  * ========== Sales Details ============
- * ====================================
+ * =====================================
  *
  * Tabela dedicada a guardar a informação dos Detalhes de vendas.
  */
