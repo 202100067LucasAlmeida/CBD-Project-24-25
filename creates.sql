@@ -127,54 +127,16 @@ create table security.question(
 	primary key(question_id)
 );
 
-/* ================================
- * ========== Customer ============
- * ================================
- *
- * Tabela dedicada a guardar a informação dos Clientes. 
- */
-create table customer.customer(
-	customer_id int not null,
-	title_id int,
-	gender_id int,
-	marital_id int,
-	occupation_id int,
-	education_id int,
+-- userQuestion
+create table security.userQuestion(
 	_user_id int,
 	question_id int,
-	first_name char(30) not null,
-	middle_name char(30),
-	last_name char(30) not null,
-	customer_address char(50) not null,
-	customer_phone char(15) not null,
-	yearly_income int not null,
-	cars_owned int not null,
-	birth_date date not null,
-	first_purchase date not null,
-	primary key(customer_id),
-	foreign key(title_id) references customer.title(title_id),
-	foreign key(gender_id) references customer.gender(gender_id),
-	foreign key(marital_id) references customer.marital(marital_id),
-	foreign key(occupation_id) references customer.occupation(occupation_id),
-	foreign key(education_id) references customer.education(education_id),
+	answer varchar(100)
+
+	primary key(_user_id),
 	foreign key(_user_id) references security._user(_user_id),
 	foreign key(question_id) references security.question(question_id)
 );
-
-/* ======================================
- * ========== Customer Title ============
- * ======================================
- *
- * Tabela dedicada a guardar a informação de Clientes que tem títulos atribuídos.
- */
-create table customer.customerTitle(
-	customer_id int not null,
-	title_id int,
-	primary key(customer_id),
-	foreign key(customer_id) references customer.customer(customer_id),
-	foreign key(title_id) references customer.title(title_id)
-);
-
 
 /* =====================================
  * ========== Schema Territory ==========
@@ -258,18 +220,96 @@ create table territory.city(
 	foreign key(state_id, region_id) references territory._state(state_id, region_id)
 );
 
-/*
- * Alterações na tabela Customer.
+/* ================================
+ * ========== Customer ============
+ * ================================
+ *
+ * Tabela dedicada a guardar a informação dos Clientes. 
  */
-alter table customer.customer
-add
+create table customer.customer(
+	customer_id int not null,
+	first_name char(30) not null,
+	middle_name char(30),
+	last_name char(30) not null,
+	customer_address char(50) not null,
+	customer_phone char(15) not null,
+	yearly_income int not null,
+	cars_owned int not null,
+	birth_date date not null,
+	first_purchase date not null,
+	primary key(customer_id)
+);
+
+-- customerEducation
+create table customer.customerEducation(
+	customer_id int,
+	education_id int,
+	primary key(customer_id),
+	foreign key(customer_id) references customer.customer(customer_id),
+	foreign key(education_id) references customer.education(education_id)
+);
+
+-- customerGender
+create table customer.customerGender(
+	customer_id int,
+	gender_id int,
+	primary key(customer_id),
+	foreign key(customer_id) references customer.customer(customer_id),
+	foreign key(gender_id) references customer.gender(gender_id)
+);
+
+-- customerMarital
+create table customer.customerMarital(
+	customer_id int,
+	marital_id int,
+	primary key(customer_id),
+	foreign key(customer_id) references customer.customer(customer_id),
+	foreign key(marital_id) references customer.marital(marital_id)
+);
+
+-- customerOccupation
+create table customer.customerOccupation(
+	customer_id int,
+	occupation_id int,
+	primary key(customer_id),
+	foreign key(customer_id) references customer.customer(customer_id),
+	foreign key(occupation_id) references customer.occupation(occupation_id)
+);
+
+-- customerCity
+create table customer.customerCity(
+	customer_id int,
 	city_id int,
 	state_id int,
-	region_id int;
+	region_id int,
+	primary key(customer_id),
+	foreign key(customer_id) references customer.customer(customer_id),
+	foreign key(city_id, state_id, region_id) references territory.city(city_id, state_id, region_id)
+);
 
-alter table customer.customer
-add constraint fk_customer_city
-foreign key (city_id, state_id, region_id) references territory.city(city_id, state_id, region_id);
+-- customerUser
+create table customer.customerUser(
+	customer_id int,
+	_user_id int,
+	primary key(customer_id),
+	foreign key(customer_id) references customer.customer(customer_id),
+	foreign key(_user_id) references security._user(_user_id)
+);
+
+
+/* ======================================
+ * ========== Customer Title ============
+ * ======================================
+ *
+ * Tabela dedicada a guardar a informação de Clientes que tem títulos atribuídos.
+ */
+create table customer.customerTitle(
+	customer_id int not null,
+	title_id int,
+	primary key(customer_id),
+	foreign key(customer_id) references customer.customer(customer_id),
+	foreign key(title_id) references customer.title(title_id)
+);
 
 /* =====================================
  * ========== Schema Currency ==========
