@@ -509,9 +509,11 @@ select * from customer.customerCity;
 insert into customer.customerCity(customer_id, city_id, state_id, region_id)
 select distinct cc.customer_id, ct.city_id, ct.state_id, ct.region_id
 from AdventureWorksLegacy.dbo.Customer c
+inner join AdventureWorksLegacy.dbo.SalesTerritory st on st.SalesTerritoryKey = c.SalesTerritoryKey
 inner join customer.customer cc on cc.customer_id = c.CustomerKey
 inner join territory.city ct on ct.city_name = c.City and ct.postal_code = c.PostalCode
-where cc.customer_id = 11332
+inner join territory._state s on s.state_id = ct.state_id
+where s.state_code = c.StateProvinceCode
 ;
 
 
