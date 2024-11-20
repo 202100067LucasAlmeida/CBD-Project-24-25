@@ -7,12 +7,12 @@
  * João Pedro M. Morais - 202001541
  *
  * ========== DOCENTE ==========
- * Professor Luís Damas <3
+ * Professor Luís Damas 
  *
  */
 
 --exec sp_who;
---KILL 51;
+KILL 51;
 
 use master;
 drop database if exists AdventureWorks;
