@@ -183,3 +183,23 @@ begin
 	end catch;
 end;
 go
+
+drop procedure if exists customer.sp_saleInformation
+go
+create procedure customer.sp_saleInformation
+	@orderDate date,
+	@customerID int
+as
+begin
+	select c.customer_id as 'ID Cliente', concat_ws(' ', c.first_name, c.last_name) as 'Cliente', 
+	   s.sales_id as 'Número do Pedido', s.sales_lineNumber as 'Número de Linha', 
+	   s.sales_quantity as 'Quantidade', s.sales_unitPrice as 'Preço Unitário', 
+	   (s.sales_unitPrice + s.sales_taxAmount + s.sales_freight)* s.sales_quantity as 'Preço Final com taxas',
+	   s.sales_orderDate as 'Data do Pedido', s.sales_dueDate as 'Data de Vencimento', 
+	   s.sales_shipDate as 'Data de Envio'
+	from sales.sale s
+		join sales.saleCustomer sc on sc.sales_id = s.sales_id and sc.sales_lineNumber = s.sales_lineNumber
+		join customer.customer c on c.customer_id = sc.customer_id
+	where c.customer_id = @customerID and s.sales_orderDate = @orderDate;
+end;
+go
