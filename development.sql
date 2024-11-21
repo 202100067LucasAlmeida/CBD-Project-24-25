@@ -203,3 +203,60 @@ begin
 	where c.customer_id = @customerID and s.sales_orderDate = @orderDate;
 end;
 go
+
+go
+create view product.CategoriasProdutos as
+select distinct
+ p.product_name as 'product'
+ ,cc.category_name as 'category'
+ ,c.category_name as 'subcategory'
+from product.productCategory pc
+inner join product._product p on p.product_id = pc.product_id
+inner join product.category c on c.category_id = pc.category_id
+inner join product.category cc on cc.category_id = c.category_parentCategory;
+go
+
+go
+create view product.ListarProdudos as
+select distinct
+	p.product_id,
+	p.product_name,
+	p.product_description,
+	p.product_size,
+	p.product_weight,
+	p.product_listPrice,
+	p.product_standardCost,
+	p.product_dealerPrice,
+	p.product_daysToManufacture,
+	p.product_finishedGoods,
+	c.class_code,
+	cl.color_name,
+	l.line_code,
+	m.model_name,
+	st.style_code,
+	sr.sizeRange_description,
+	su.sizeUnit_description,
+	wu.weigthUnit_description,
+	cc.category_name as 'product_category',
+	ct.category_name as 'product_subcategory'
+from product._product p
+inner join product.productClass pc on p.product_id = pc.product_id
+	inner join product.class c on pc.class_id = c.class_id
+inner join product.productColor pcl on p.product_id = pcl.product_id
+	inner join product.color cl on pcl.color_id = cl.color_id
+inner join product.productLine pl on p.product_id = pl.product_id
+	inner join product.line l on pl.line_id = l.line_id
+inner join product.productModel pm on p.product_id = pm.product_id
+	inner join product.model m on pm.model_id = m.model_id
+inner join product.productStyle ps on p.product_id = ps.product_id
+	inner join product.style st on ps.style_id = st.style_id
+inner join product.productSizeRange psr on p.product_id = psr.product_id
+	inner join product.sizeRange sr on sr.sizeRange_id = psr.sizeRange_id
+inner join product.productSizeUnit psu on p.product_id = psu.product_id
+	inner join product.sizeUnit su on su.sizeUnit_id = psu.sizeUnit_id
+inner join product.productWeigthUnit pw on p.product_id = pw.product_id
+	inner join product.weigthUnit wu on wu.weigthUnit_id = pw.weigthUnit_id
+inner join product.productCategory pct on p.product_id = pct.product_id
+	inner join product.category ct on ct.category_id = pct.category_id
+inner join product.category cc on cc.category_id = ct.category_parentCategory;
+go

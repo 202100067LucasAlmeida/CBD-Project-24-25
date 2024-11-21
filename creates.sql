@@ -12,7 +12,6 @@
  */
 
 --exec sp_who;
--- KILL 51;
 
 use master;
 drop database if exists AdventureWorks;
