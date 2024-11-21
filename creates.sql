@@ -111,7 +111,6 @@ go
  */
 create table security._user(
 	user_email char(30) not null,
-	_user_id int identity(1,1) not null,
 	user_password char(30) not null,
 	primary key(user_email)
 );
@@ -138,6 +137,14 @@ create table security.userQuestion(
 	primary key(_user_email),
 	foreign key(_user_email) references security._user(user_email),
 	foreign key(question_id) references security.question(question_id)
+);
+
+--sentEmails
+create table security.sentEmail(
+	destinatary char(100) not null,
+	_message nvarchar(max) not null,
+	sentTime datetime default getdate(),
+	primary key(destinatary, sentTime)
 );
 
 -- Erros

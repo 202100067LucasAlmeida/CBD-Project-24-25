@@ -46,7 +46,7 @@
 		join security.question q on q.security_question = @securityQuestion
 		where u.user_email = @email;
 
-		print 'Utilizador adicionado com sucesso!'
+		print 'Utilizador adicionado com sucesso!';
 	end try
 	begin catch
 		declare @ErrorMessage nvarchar(4000) = ERROR_MESSAGE();
@@ -55,7 +55,7 @@
 
 		exec security.sp_logError @ErrorMessage, @ErrorNumber, @ErrorSeverity;
 
-		print 'Ocorreu um erro ao adicionar o utilizador. Utilizador não adicionado.'
+		print 'Ocorreu um erro ao adicionar o utilizador. Utilizador não adicionado.';
 	end catch;
  end;
  go
@@ -87,7 +87,7 @@ begin
 			answer = COALESCE(@newAnswer, answer)
 			where _user_email = @email;
 
-		print 'O utilizador foi editado com sucesso!'
+		print 'O utilizador foi editado com sucesso!';
 	end try
 	begin catch
 		declare @ErrorMessage nvarchar(4000) = ERROR_MESSAGE();
@@ -96,7 +96,7 @@ begin
 
 		exec security.sp_logError @ErrorMessage, @ErrorNumber, @ErrorSeverity;
 
-		print 'Ocorreu um erro ao editar o utilizador. Utilizador não foi editado.'
+		print 'Ocorreu um erro ao editar o utilizador. Utilizador não foi editado.';
 	end catch;
 end;
 go
@@ -104,9 +104,82 @@ go
 drop procedure if exists security.sp_removeUser
 go
 create procedure security.sp_removeUser
+	@email char(100)
 as
-
 begin
+	begin try
+		declare @questionID int = (select question_id from security.userQuestion where _user_email = @email);
+		
+		delete from security.userQuestion
+		where _user_email = @email;
 
+		delete from security.question
+		where question_id = @questionID;
+
+		delete from security._user
+		where user_email = @email;
+
+		print 'O utilizador foi removido com sucesso!'
+	end try
+	begin catch
+	declare @ErrorMessage nvarchar(4000) = ERROR_MESSAGE();
+		declare @ErrorNumber int = ERROR_NUMBER();
+		declare @ErrorSeverity int = ERROR_SEVERITY();
+
+		exec security.sp_logError @ErrorMessage, @ErrorNumber, @ErrorSeverity;
+
+		print 'Ocorreu um erro ao remover o utilizador. Utilizador não foi removido.';
+	end catch;
+end;
+go
+
+drop procedure if exists security.sp_receivePass
+go
+create procedure security.sp_receivePass
+	@email char(100),
+	@securityAnswer char(200)
+as
+begin
+	begin try
+		declare @correctAnswer char(200) = (select uq.answer from security.userQuestion uq
+											where uq._user_email = @email);;
+		declare @newPass char(200);
+
+		if @correctAnswer is null
+		begin
+			print 'Usuário não encontrado ou sem questão de segurança definida.'
+			return;
+		end
+
+		if @correctAnswer != @securityAnswer
+		begin
+			print 'Resposta incorreta à pergunta de segurança.'
+			return;
+		end
+
+		set @newPass = LEFT(NEWID(),8);
+		
+		update security._user
+		set user_password = @newPass
+		where user_email = @email;
+
+		-- enviar email
+		insert into security.sentEmail(destinatary, _message)
+		values(
+			   @email,
+			   concat('Sua senha foi recuperada. Nova Passe: ', @newPass, '. Faça a alteração de sua senha o quanto antes.')
+			   );
+
+		print 'Senha recuperada e enviada com sucesso!';
+	end try
+	begin catch
+		declare @ErrorMessage nvarchar(4000) = ERROR_MESSAGE();
+		declare @ErrorNumber int = ERROR_NUMBER();
+		declare @ErrorSeverity int = ERROR_SEVERITY();
+
+		exec security.sp_logError @ErrorMessage, @ErrorNumber, @ErrorSeverity;
+
+		print 'Ocorreu um erro ao recuperar a senha do utilizador. Nova senha não foi enviada.';
+	end catch;
 end;
 go

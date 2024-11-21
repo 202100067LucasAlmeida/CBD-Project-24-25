@@ -12,8 +12,7 @@
  *
  */
 
-select email from customer.customer
-where email = 'lucas@adventure-works.com';
+select email from customer.customer;
 -- Adicionando um user
 exec security.sp_addUser 'jon24@adventure-works.com', 'umaSenh@MuitoFuerte!', 'qual o nome do meu gato?', 'kiara';
 
@@ -31,3 +30,13 @@ exec security.sp_editUser 'jon24@adventure-works.com', '1234567890', 'quantos am
 
 -- Success!
 
+-- Removendo um User
+exec security.sp_removeUser 'jon24@adventure-works.com';
+
+-- Success
+
+-- Recuperando senha de um user
+exec security.sp_receivePass 'jon24@adventure-works.com', 'kiara'; -- Senha correta
+exec security.sp_receivePass 'jon24@adventure-works.com', 'faisca'; -- Senha incorreta
+
+select * from security.sentEmail;
