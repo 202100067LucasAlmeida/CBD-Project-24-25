@@ -32,3 +32,8 @@ sum(s.sales_quantity*s.sales_unitPrice) as 'Total monetário de vendas por ano e 
 from AdventureWorks.sales.sale s 
 inner join AdventureWorks.sales.saleProducts sp on sp.sales_id = s.sales_id and sp.sales_lineNumber = s.sales_lineNumber
 group by YEAR(sales_orderDate), sp.product_id;
+
+
+
+
+
