@@ -12,7 +12,7 @@
  */
 
 --exec sp_who;
-KILL 51;
+-- KILL 51;
 
 use master;
 drop database if exists AdventureWorks;
@@ -110,10 +110,10 @@ go
  * Tabela dedicada a guardar a informação de um Cliente que é um Utilizador.
  */
 create table security._user(
-	_user_id int identity(1,1) not null,
 	user_email char(30) not null,
+	_user_id int identity(1,1) not null,
 	user_password char(30) not null,
-	primary key(_user_id)
+	primary key(user_email)
 );
 
 /* ================================
@@ -125,19 +125,34 @@ create table security._user(
  */
 create table security.question(
 	question_id int identity(1,1) not null,
-	security_question char(30) not null,
+	security_question char(200) not null,
 	primary key(question_id)
 );
 
 -- userQuestion
 create table security.userQuestion(
-	_user_id int,
+	_user_email char(30),
 	question_id int,
 	answer varchar(200)
 
-	primary key(_user_id),
-	foreign key(_user_id) references security._user(_user_id),
+	primary key(_user_email),
+	foreign key(_user_email) references security._user(user_email),
 	foreign key(question_id) references security.question(question_id)
+);
+
+-- Erros
+go
+create schema error
+go
+
+-- errorLog
+create table error.errorLog (
+    ErrorID int identity(1,1) primary key,
+    ErrorMessage nvarchar(4000),
+    ErrorNumber int,
+    ErrorSeverity int,
+    UserName nvarchar(100),
+    ErrorDateTime datetime default getdate()
 );
 
 /* =====================================
@@ -293,10 +308,10 @@ create table customer.customerCity(
 -- customerUser
 create table customer.customerUser(
 	customer_id int,
-	_user_id int,
+	_user_email char(30),
 	primary key(customer_id),
 	foreign key(customer_id) references customer.customer(customer_id),
-	foreign key(_user_id) references security._user(_user_id)
+	foreign key(_user_email) references security._user(user_email)
 );
 
 
