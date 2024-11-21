@@ -13,18 +13,17 @@ select s.customer_id as 'Customer', count(distinct s.sales_id) as 'Nº de sales' 
 --Total monetário de vendas por ano;
 select sum(s.OrderQuantity*s.UnitPrice) as 'Total monetário de vendas por ano'
 from AdventureWorksLegacy.dbo.Sales s
-where YEAR(s.OrderDate) = 2014;
+group by YEAR(s.OrderDate);
 
 select sum(sales_quantity*sales_unitPrice) as 'Total monetário de vendas por ano' 
-from AdventureWorks.sales.sale where YEAR(sales_orderDate) = 2014;
+from AdventureWorks.sales.sale group by YEAR(sales_orderDate);
 
 --Total monetário de vendas por ano e por “Product”.
 select 
 s.ProductKey as 'Produto',
 sum(s.OrderQuantity*s.UnitPrice) as 'Total monetário de vendas por ano e produto'
 from AdventureWorksLegacy.dbo.Sales s
-where YEAR(s.OrderDate) = 2014
-group by s.ProductKey;
+group by YEAR(s.OrderDate), s.ProductKey;
 
 
 select 
@@ -32,5 +31,4 @@ sp.product_id as 'Produto',
 sum(s.sales_quantity*s.sales_unitPrice) as 'Total monetário de vendas por ano e produto' 
 from AdventureWorks.sales.sale s 
 inner join AdventureWorks.sales.saleProducts sp on sp.sales_id = s.sales_id and sp.sales_lineNumber = s.sales_lineNumber
-where YEAR(sales_orderDate) = 2014
-group by sp.product_id;
+group by YEAR(sales_orderDate), sp.product_id;
