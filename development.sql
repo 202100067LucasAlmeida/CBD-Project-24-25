@@ -12,6 +12,8 @@
  *
  */
 
+ use AdventureWorks;
+
  drop procedure if exists security.sp_logError
  go
  create procedure security.sp_logError
