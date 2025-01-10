@@ -21,7 +21,15 @@ group by c.city_name, s.state_code
 order by 'city'
 ;
 
--- Pesquisa de produtos associadosa vendas com valor total superior a 1000
+-- Pesquisa de produtos associados a vendas com valor total superior a 1000
+select distinct
+	p.product_name as 'produtos em vendas com total superior a 1000'
+from sales.saleProducts sp
+	inner join product._product p on sp.product_id = p.product_id
+where sp.sales_id in (select s.sales_id
+						from sales.sale s
+						group by s.sales_id
+						having sum(s.sales_unitPrice*s.sales_quantity) > 1000);
 
 
 -- numero de produtos vendidos por categoria
