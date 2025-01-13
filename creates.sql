@@ -11,7 +11,8 @@
  *
  */
 
---exec sp_who;
+-- exec sp_who;
+-- kill 53;
 
 use master;
 drop database if exists AdventureWorks;
@@ -129,8 +130,8 @@ create table security.question(
 
 -- userQuestion
 create table security.userQuestion(
-	_user_email char(30),
-	question_id int,
+	_user_email char(30) not null,
+	question_id int not null,
 	answer varchar(200)
 
 	primary key(_user_email),
@@ -191,7 +192,7 @@ create table territory._group(
  */
 create table territory.country(
 	country_id int identity(1,1) not null,
-	group_id int,
+	group_id int not null,
 	country_name char(20) not null,
 	country_code char(10) not null,
 	primary key(country_id),
@@ -206,7 +207,7 @@ create table territory.country(
  */
 create table territory.region(
 	region_id int identity(1,1) not null,
-	country_id int,
+	country_id int not null,
 	region_name char(20) not null,
 	primary key(region_id),
 	foreign key(country_id) references territory.country(country_id)
@@ -220,7 +221,7 @@ create table territory.region(
  */
 create table territory._state(
 	state_id int identity(1,1) not null,
-	region_id int,
+	region_id int not null,
 	state_name char(20) not null,
 	state_code char(10) not null,
 	primary key(state_id, region_id),
@@ -235,8 +236,8 @@ create table territory._state(
  */
 create table territory.city(
 	city_id int identity(1,1) not null,
-	state_id int,
-	region_id int,
+	state_id int not null,
+	region_id int not null,
 	city_name char(50) not null,
 	postal_code varchar(20) not null,
 	primary key(city_id, state_id, region_id),
@@ -266,8 +267,8 @@ create table customer.customer(
 
 -- customerEducation
 create table customer.customerEducation(
-	customer_id int,
-	education_id int,
+	customer_id int not null,
+	education_id int not null,
 	primary key(customer_id),
 	foreign key(customer_id) references customer.customer(customer_id),
 	foreign key(education_id) references customer.education(education_id)
@@ -275,8 +276,8 @@ create table customer.customerEducation(
 
 -- customerGender
 create table customer.customerGender(
-	customer_id int,
-	gender_id int,
+	customer_id int not null,
+	gender_id int not null,
 	primary key(customer_id),
 	foreign key(customer_id) references customer.customer(customer_id),
 	foreign key(gender_id) references customer.gender(gender_id)
@@ -293,8 +294,8 @@ create table customer.customerMarital(
 
 -- customerOccupation
 create table customer.customerOccupation(
-	customer_id int,
-	occupation_id int,
+	customer_id int not null,
+	occupation_id int not null,
 	primary key(customer_id),
 	foreign key(customer_id) references customer.customer(customer_id),
 	foreign key(occupation_id) references customer.occupation(occupation_id)
@@ -302,10 +303,10 @@ create table customer.customerOccupation(
 
 -- customerCity
 create table customer.customerCity(
-	customer_id int,
-	city_id int,
-	state_id int,
-	region_id int,
+	customer_id int not null,
+	city_id int not null,
+	state_id int not null,
+	region_id int not null,
 	primary key(customer_id),
 	foreign key(customer_id) references customer.customer(customer_id),
 	foreign key(city_id, state_id, region_id) references territory.city(city_id, state_id, region_id)
@@ -313,8 +314,8 @@ create table customer.customerCity(
 
 -- customerUser
 create table customer.customerUser(
-	customer_id int,
-	_user_email char(30),
+	customer_id int not null,
+	_user_email char(30) not null,
 	primary key(customer_id),
 	foreign key(customer_id) references customer.customer(customer_id),
 	foreign key(_user_email) references security._user(user_email)
@@ -496,8 +497,8 @@ create table product._product(
  * Tabela dedicada a guardar a informação de Produtos que tem Intervalos de Tamamho atribuídos.
  */
 create table product.productSizeRange(
-	product_id int,
-	sizeRange_id int,
+	product_id int not null,
+	sizeRange_id int not null,
 
 	primary key (product_id),
 	foreign key (product_id) references product._product(product_id),
@@ -511,8 +512,8 @@ create table product.productSizeRange(
  * Tabela dedicada a guardar a informação de Produtos que tem Estilos atribuídos.
  */
  create table product.productStyle(
-	product_id int,
-	style_id int,
+	product_id int not null,
+	style_id int not null,
 
 	primary key (product_id),
 	foreign key (product_id) references product._product(product_id),
@@ -526,8 +527,8 @@ create table product.productSizeRange(
  * Tabela dedicada a guardar a informação de Produtos que tem Linhas de produto atribuídas.
  */
 create table product.productLine(
-	product_id int,
-	line_id int,
+	product_id int not null,
+	line_id int not null,
 
 	primary key (product_id),
 	foreign key (product_id) references product._product(product_id),
@@ -541,8 +542,8 @@ create table product.productLine(
  * Tabela dedicada a guardar a informação de Produtos que tem Unidades de medida(tamanho) atribuídas.
  */
 create table product.productSizeUnit(
-	product_id int,
-	sizeUnit_id int,
+	product_id int not null,
+	sizeUnit_id int not null,
 
 	primary key (product_id),
 	foreign key (product_id) references product._product(product_id),
@@ -556,8 +557,8 @@ create table product.productSizeUnit(
  * Tabela dedicada a guardar a informação de Produtos que tem Unidades de medida(peso) atribuídas.
  */
 create table product.productWeigthUnit(
-	product_id int,
-	weigthUnit_id int,
+	product_id int not null,
+	weigthUnit_id int not null,
 
 	primary key (product_id),
 	foreign key (product_id) references product._product(product_id),
@@ -571,8 +572,8 @@ create table product.productWeigthUnit(
  * Tabela dedicada a guardar a informação de Produtos que tem Cores atribuídas.
  */
 create table product.productColor(
-	product_id int,
-	color_id int,
+	product_id int not null,
+	color_id int not null,
 
 	primary key(product_id),
 	foreign key(product_id) references product._product(product_id),
@@ -586,8 +587,8 @@ create table product.productColor(
  * Tabela dedicada a guardar a informação de Produtos que tem Modelos atribuídos.
  */
 create table product.productModel(
-	product_id int,
-	model_id int,
+	product_id int not null,
+	model_id int not null,
 
 	primary key(product_id),
 	foreign key(product_id) references product._product(product_id),
@@ -601,8 +602,8 @@ create table product.productModel(
  * Tabela dedicada a guardar a informação de Produtos que tem Classes atribuídas.
  */
 create table product.productClass(
-	product_id int,
-	class_id int,
+	product_id int not null,
+	class_id int not null,
 
 	primary key(product_id),
 	foreign key(product_id) references product._product(product_id),
@@ -616,8 +617,8 @@ create table product.productClass(
  * Tabela dedicada a guardar a informação de Produtos que tem Categorias atribuídas.
  */
 create table product.productCategory(
-	product_id int,
-	category_id int,
+	product_id int not null,
+	category_id int not null,
 
 	primary key(product_id),
 	foreign key(product_id) references product._product(product_id),
@@ -641,7 +642,7 @@ go
  * Tabela dedicada a guardar a informação das Vendas.
  */
 create table sales.sale(
-	sales_id varchar(20),
+	sales_id varchar(20) not null,
 	sales_lineNumber int not null,
 	sales_quantity int not null,
 	sales_unitPrice float not null,
@@ -661,9 +662,9 @@ create table sales.sale(
  * Tabela dedicada a guardar a informação relacionada dos Produtos as Vendas.
  */
 create table sales.saleProducts(
-	sales_id varchar(20),
-	sales_lineNumber int,
-	product_id int,
+	sales_id varchar(20) not null,
+	sales_lineNumber int not null,
+	product_id int not null,
 	primary key(sales_id, sales_lineNumber, product_id),
 	foreign key(sales_id, sales_lineNumber) references sales.sale(sales_id, sales_lineNumber),
 	foreign key(product_id) references product._product(product_id)
@@ -677,9 +678,9 @@ create table sales.saleProducts(
  */
 
  create table sales.saleCurrency(
-	sales_id varchar(20),
-	sales_lineNumber int,
-	currency_id int,
+	sales_id varchar(20) not null,
+	sales_lineNumber int not null,
+	currency_id int not null,
 	primary key(sales_id, sales_lineNumber, currency_id),
 	foreign key(sales_id, sales_lineNumber) references sales.sale(sales_id, sales_lineNumber),
 	foreign key(currency_id) references currency.currency(currency_id)
@@ -693,9 +694,9 @@ create table sales.saleProducts(
  */
 
  create table sales.saleCountry(
-	sales_id varchar(20),
-	sales_lineNumber int,
-	country_id int,
+	sales_id varchar(20) not null,
+	sales_lineNumber int not null,
+	country_id int not null,
 	primary key(sales_id, sales_lineNumber, country_id),
 	foreign key(sales_id, sales_lineNumber) references sales.sale(sales_id, sales_lineNumber),
 	foreign key(country_id) references territory.country(country_id)
@@ -708,9 +709,9 @@ create table sales.saleProducts(
  * Tabela dedicada a guardar a informação relacionada dos Clientes as Vendas.
  */
  create table sales.saleCustomer(
-	sales_id varchar(20),
-	sales_lineNumber int,
-	customer_id int,
+	sales_id varchar(20) not null,
+	sales_lineNumber int not null,
+	customer_id int not null,
 	primary key(sales_id, sales_lineNumber, customer_id),
 	foreign key(sales_id, sales_lineNumber) references sales.sale(sales_id, sales_lineNumber),
 	foreign key(customer_id) references customer.customer(customer_id)
