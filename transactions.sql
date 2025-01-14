@@ -20,9 +20,9 @@ begin transaction;
 		10.0,
 		0.5,
 		0,
-		GETDATE(),
-		GETDATE(),
-		GETDATE()
+		GETDATE(),	-- devia-se ir buscar as datas anteriores e/ou alterar por datas novas
+		GETDATE(),	-- devia-se ir buscar as datas anteriores e/ou alterar por datas novas
+		GETDATE()	-- devia-se ir buscar as datas anteriores e/ou alterar por datas novas
 	);
 
 	set @product_id = 212;
