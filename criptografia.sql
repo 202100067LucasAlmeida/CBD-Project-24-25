@@ -1,8 +1,5 @@
 use AdventureWorks;
 
-
-
-
 drop procedure if exists security.sp_encript;
 go
 create procedure security.sp_encript
@@ -52,8 +49,7 @@ BEGIN
     FROM security._user u
 	inner join security.userQuestion uq on u.user_email = uq._user_email
 	inner join security.question q on uq.question_id = q.question_id
-    WHERE u.user_email = @userEmail
-	;
+    WHERE u.user_email = @userEmail;
 
     -- Fechar a chave simétrica
     CLOSE SYMMETRIC KEY RecoveryKey;
