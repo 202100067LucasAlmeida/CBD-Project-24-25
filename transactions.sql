@@ -65,8 +65,8 @@ SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; -- garante que nenhuma outra trans
 BEGIN TRANSACTION;
 	declare @email char(30);
 
-	set @email = 'jon24@adventure-works.com'; -- email mock, de user que já existe
-	--set @email = 'pablo@adventure-works.com'; -- email mock, de user que não existe
+	--set @email = 'jon24@adventure-works.com'; -- email mock, de user que já existe
+	set @email = 'pablo@adventure-works.com'; -- email mock, de user que não existe
 
 
 IF NOT EXISTS (

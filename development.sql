@@ -37,15 +37,27 @@
  as
  begin
 	begin try
+
+		declare @hashPW varbinary(max);
+
+		exec security.sp_encript @password, @hashPW output;
+
 		insert into security._user(user_email, user_password)
-		values(@email, @password)
+		values(@email, @hashPW)
 		
+		-- Abrir a chave simétrica
+		OPEN SYMMETRIC KEY RecoveryKey DECRYPTION BY CERTIFICATE RecoveryCert;
+
+		-- Criptografar os dados
+		DECLARE @EncryptedQuestion VARBINARY(MAX) = ENCRYPTBYKEY(KEY_GUID('RecoveryKey'), @securityQuestion);
+		DECLARE @EncryptedAnswer VARBINARY(MAX) = ENCRYPTBYKEY(KEY_GUID('RecoveryKey'), @answer);
+
 		insert into security.question(security_question)
-		values(@securityQuestion)
+		values(@EncryptedQuestion)
 
 		insert into security.userQuestion(_user_email, question_id, answer)
-		select u.user_email, q.question_id, answer = @answer from security._user u
-		join security.question q on q.security_question = @securityQuestion
+		select u.user_email, q.question_id, answer = @EncryptedAnswer from security._user u
+		join security.question q on q.security_question = @EncryptedQuestion
 		where u.user_email = @email;
 
 		print 'Utilizador adicionado com sucesso!';
@@ -144,7 +156,7 @@ as
 begin
 	begin try
 		declare @correctAnswer char(200) = (select uq.answer from security.userQuestion uq
-											where uq._user_email = @email);;
+											where uq._user_email = @email);
 		declare @newPass char(200);
 
 		if @correctAnswer is null
@@ -206,6 +218,7 @@ begin
 end;
 go
 
+drop view if exists product.CategoriasProdutos;
 go
 create view product.CategoriasProdutos as
 select distinct
@@ -218,6 +231,7 @@ inner join product.category c on c.category_id = pc.category_id
 inner join product.category cc on cc.category_id = c.category_parentCategory;
 go
 
+drop view if exists product.ListarProdudos;
 go
 create view product.ListarProdudos as
 select distinct
