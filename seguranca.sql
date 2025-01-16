@@ -1,3 +1,17 @@
+ï»¿/*
+ * O ficheiro seguranca.sql ï¿½ designado para a parte da programaï¿½ï¿½o
+ * (desenvolvimento users, roles e permissoes)
+ * na nova base de dados AdventureWorks.
+ *
+ * ========== PROGRAMADORES ==========
+ * Lucas Alexandre S. F. de Almeida - 202100067
+ * Joï¿½o Pedro M. Morais - 202001541
+ *
+ * ========== DOCENTE ==========
+ * Professor Luï¿½s Damas
+ *
+ */
+
 use AdventureWorks;
 
 -- CRIAR CONTAS
@@ -12,18 +26,18 @@ create user territoryUser for login territoryUser;
 
 -- ATRIBUIR PERMISSOES
 -- administrator
-	grant control to adminUser; -- atribui acesso total à base de dados (servidor excluido)
+	grant control to adminUser; -- atribui acesso total Ã  base de dados (servidor excluido)
 
 -- salesPerson
--- permissões de escrita, leitura e update em sales
+-- permissÃµes de escrita, leitura e update em sales
 	grant select, insert, update, delete on schema::[sales] to salesUser;
 
--- permissões de leitura nas restantes tabelas
+-- permissÃµes de leitura nas restantes tabelas
 	grant select on schema::[customer] to salesUser;
 	grant select on schema::[currency] to salesUser;
 	grant select on schema::[product] to salesUser;
 	grant select on schema::[territory] to salesUser;
--- remover permissões de leitura a tabelas de gestão da bd
+-- remover permissÃµes de leitura a tabelas de gestÃ£o da bd
 	deny select on schema::[security] to salesUser;
 	deny select on schema::[error] to salesUser;
 
@@ -31,11 +45,11 @@ create user territoryUser for login territoryUser;
 -- salesTerritoryPerson
 	grant select, insert, update, delete on schema::[territory] to territoryUser;
 
-	-- permissões de leitura nas restantes tabelas
+	-- permissÃµes de leitura nas restantes tabelas
 	grant select on schema::[customer] to territoryUser;
 	grant select on schema::[currency] to territoryUser;
 	grant select on schema::[product] to territoryUser;
 	grant select on schema::[sales] to territoryUser;
--- remover permissões de leitura a tabelas de gestão da bd
+-- remover permissÃµes de leitura a tabelas de gestÃ£o da bd
 	deny select on schema::[security] to territoryUser;
 	deny select on schema::[error] to territoryUser;

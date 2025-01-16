@@ -1,3 +1,17 @@
+ï»¿/*
+ * O ficheiro criptografia.sql ï¿½ designado para a parte da programaï¿½ï¿½o
+ * (desenvolvimento de sp's, certificados e keys)
+ * na nova base de dados AdventureWorks.
+ *
+ * ========== PROGRAMADORES ==========
+ * Lucas Alexandre S. F. de Almeida - 202100067
+ * Joï¿½o Pedro M. Morais - 202001541
+ *
+ * ========== DOCENTE ==========
+ * Professor Luï¿½s Damas
+ *
+ */
+
 use AdventureWorks;
 
 drop procedure if exists security.sp_encript;
@@ -39,7 +53,7 @@ CREATE PROCEDURE sp_getRecoveryQuestion (
 )
 AS
 BEGIN
-    -- Abrir a chave simétrica
+    -- Abrir a chave simÃ©trica
     OPEN SYMMETRIC KEY RecoveryKey DECRYPTION BY CERTIFICATE RecoveryCert;
 
     -- Recuperar e descriptografar os dados
@@ -51,6 +65,6 @@ BEGIN
 	inner join security.question q on uq.question_id = q.question_id
     WHERE u.user_email = @userEmail;
 
-    -- Fechar a chave simétrica
+    -- Fechar a chave simÃ©trica
     CLOSE SYMMETRIC KEY RecoveryKey;
 END;

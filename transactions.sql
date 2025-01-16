@@ -1,14 +1,28 @@
+ï»¿/*
+ * O ficheiro transactions.sql ï¿½ designado para a parte da programaï¿½ï¿½o
+ * (desenvolvimento de transacoes)
+ * na nova base de dados AdventureWorks.
+ *
+ * ========== PROGRAMADORES ==========
+ * Lucas Alexandre S. F. de Almeida - 202100067
+ * Joï¿½o Pedro M. Morais - 202001541
+ *
+ * ========== DOCENTE ==========
+ * Professor Luï¿½s Damas
+ *
+ */
+
 use AdventureWorks;
 
 -- Adicionar produto a uma venda
-set transaction isolation level read committed; -- garante que a transação não leia dados não confirmados, evitando problemas como dirty reads.
+set transaction isolation level read committed; -- garante que a transaÃ§Ã£o nÃ£o leia dados nÃ£o confirmados, evitando problemas como dirty reads.
 begin transaction;
 	declare @sale_id varchar(20);
 	declare @sale_lineNumber int;
 	declare @product_id int;
 	
-	-- ler de um serviço web ou aplicação
-	-- neste caso, fazer uma transação com dados mock
+	-- ler de um serviÃ§o web ou aplicaÃ§Ã£o
+	-- neste caso, fazer uma transaÃ§Ã£o com dados mock
 	set @sale_id = 'SO51176'
 	set @sale_lineNumber = (select top 1 (sales_lineNumber + 1) from sales.saleProducts where sales_id = @sale_id
 							order by sales_lineNumber DESC);
@@ -31,8 +45,8 @@ begin transaction;
 	
 commit transaction;
 
--- Atualizar o preço de um produto
-SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; -- garante que nenhuma outra transação leia ou altere o preço do produto enquanto a transação está em andamento.
+-- Atualizar o preÃ§o de um produto
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; -- garante que nenhuma outra transaÃ§Ã£o leia ou altere o preÃ§o do produto enquanto a transaÃ§Ã£o estÃ¡ em andamento.
 BEGIN TRANSACTION;
 	declare @oldPrice float;
 	declare @newPrice float;
@@ -42,7 +56,7 @@ BEGIN TRANSACTION;
 	set @oldPrice = (select p.product_standardCost from product._product p where p.product_id = @productId)
 	set @newPrice = @oldPrice * 1.5; -- atualizar o preco 
 
--- Atualizar o preço do produto
+-- Atualizar o preÃ§o do produto
 UPDATE product._product
 SET product_standardCost = @newPrice
 WHERE product_id = @ProductID;
@@ -50,7 +64,7 @@ WHERE product_id = @ProductID;
 COMMIT TRANSACTION;
 
 -- Calcular o total de vendas no ano corrente
-SET TRANSACTION ISOLATION LEVEL REPEATABLE READ; -- garante que todas as leituras feitas durante a transação permaneçam consistentes e não sejam afetadas por inserts ou updates de outras transações.
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ; -- garante que todas as leituras feitas durante a transaÃ§Ã£o permaneÃ§am consistentes e nÃ£o sejam afetadas por inserts ou updates de outras transaÃ§Ãµes.
 BEGIN TRANSACTION;
 waitfor delay '00:00:20';
 select sum(p.product_listPrice)as 'total de vendas no ano corrente' from sales.saleProducts sp
@@ -59,14 +73,14 @@ select sum(p.product_listPrice)as 'total de vendas no ano corrente' from sales.s
 where year(s.sales_orderDate) = year(GETDATE());
 COMMIT TRANSACTION;
 
--- Evitar inserções duplicadas
-SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; -- garante que nenhuma outra transação crie um user enquanto esta está em andamento.
+-- Evitar inserÃ§Ãµes duplicadas
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; -- garante que nenhuma outra transaÃ§Ã£o crie um user enquanto esta estÃ¡ em andamento.
 
 BEGIN TRANSACTION;
 	declare @email char(30);
 
-	--set @email = 'jon24@adventure-works.com'; -- email mock, de user que já existe
-	set @email = 'pablo@adventure-works.com'; -- email mock, de user que não existe
+	--set @email = 'jon24@adventure-works.com'; -- email mock, de user que jÃ¡ existe
+	set @email = 'pablo@adventure-works.com'; -- email mock, de user que nÃ£o existe
 
 
 IF NOT EXISTS (

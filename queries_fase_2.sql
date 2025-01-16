@@ -1,3 +1,17 @@
+Ôªø/*
+ * O ficheiro queries_fase_2.sql ÔøΩ designado para a parte da programaÔøΩÔøΩo
+ * (desenvolvimento de indices)
+ * na nova base de dados AdventureWorks.
+ *
+ * ========== PROGRAMADORES ==========
+ * Lucas Alexandre S. F. de Almeida - 202100067
+ * JoÔøΩo Pedro M. Morais - 202001541
+ *
+ * ========== DOCENTE ==========
+ * Professor LuÔøΩs Damas
+ *
+ */
+
 use AdventureWorks;
 
 -- comandos para monitorar desempenho
@@ -45,7 +59,7 @@ from sales.saleProducts sp
 group by c.category_name, cc.category_name
 order by c.category_name;
 
--- Õndices
+-- √çndices
 
 drop index if exists idx_city_state_id on territory.city;
 drop index if exists idx_state_region_id on territory._state;
@@ -54,20 +68,20 @@ drop index if exists idx_country_id on territory.country;
 drop index if exists idx_saleCountry on sales.saleCountry;
 drop index if exists idx_sale on sales.sale;
 
--- Õndices territory.city
+-- √çndices territory.city
 create index idx_city_state_id on territory.city (state_id, city_name);
 
--- Õndices territory._state
+-- √çndices territory._state
 create index idx_state_region_id on territory._state (region_id, state_code);
 
--- Õndices territory.region
+-- √çndices territory.region
 create index idx_region_country_id on territory.region (country_id);
 
--- Õndices territory.country
+-- √çndices territory.country
 create index idx_country_id on territory.country (country_id);
 
--- Õndices sales.saleCountry
+-- √çndices sales.saleCountry
 create index idx_saleCountry on sales.saleCountry (country_id, sales_id, sales_lineNumber);
 
--- Õndices sales.sale
+-- √çndices sales.sale
 create index idx_sale on sales.sale (sales_id, sales_lineNumber);
